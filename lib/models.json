@@ -1,0 +1,112 @@
+{
+    "scheduleSchema": {
+        "$id": "http://example.com/schedule",
+        "oneOf": [
+            {"$ref": "#/definitions/oneTime"},
+            {"$ref": "#/definitions/daily"},
+            {"$ref": "#/definitions/weekly"},
+            {"$ref": "#/definitions/monthly"}
+        ],
+        "definitions": {
+            "oneTime": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "enabled": {"type": "boolean"},
+                    "oneTime": {"type": "string", "format": "date-time"}
+                },
+                "additionalProperties": false,
+                "required": ["name", "enabled", "oneTime"]  
+            },
+            "daily": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "enabled": {"type": "boolean"},
+                    "startDateTime": {"type": "string", "format": "date-time"},
+                    "endDateTime": {"type": "string", "format": "date-time"},
+                    "eachNDay": {"type": "integer", "minimum": 1},
+                    "dailyFrequency": {"$ref": "daily#/"}
+                },
+                "additionalProperties": false,
+                "required": ["name", "enabled",  "startDateTime", "eachNDay", "dailyFrequency"]
+            },
+            "weekly": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "enabled": {"type": "boolean"},
+                    "startDateTime": {"type": "string", "format": "date-time"},
+                    "endDateTime": {"type": "string", "format": "date-time"},
+                    "eachNWeek": {"type": "integer", "minimum": 1},
+                    "dayOfWeek": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": { "enum": ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] },
+                        "additionalItems": false
+                    },
+                    "dailyFrequency": {"$ref": "daily#/"}
+                },
+                "additionalProperties": false,
+                "required": ["name", "enabled", "startDateTime", "eachNWeek", "dayOfWeek", "dailyFrequency"]
+            },
+            "monthly": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "enabled": {"type": "boolean"},
+                    "startDateTime": {"type": "string", "format": "date-time"},
+                    "endDateTime": {"type": "string", "format": "date-time"},
+                    "month": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": { "enum": ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"] },
+                        "additionalItems": false
+                    },
+                    "day": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {"type": "integer", "minimum": 1, "maximum": 31},
+                        "additionalItems": false
+                    },
+                    "dailyFrequency": {"$ref": "daily#/"}
+                },
+                "additionalProperties": false,
+                "required": ["name", "enabled", "startDateTime", "month", "day", "dailyFrequency"]
+            }
+        }
+    }
+,
+  "scheduleSchemaDaily": {
+        "$id": "http://example.com/daily",
+        "oneOf": [
+            {"$ref": "#/definitions/once"},
+            {"$ref": "#/definitions/every"}
+        ],
+        "definitions": {
+            "once": {
+                "type": "object", 
+                "properties": { "occursOnceAt": {"type": "string", "format": "time"}},
+                "additionalProperties": false,
+                "required": ["occursOnceAt"]
+            },
+            "every": {
+                "type": "object", 
+                "properties": {
+                    "start": {"type": "string", "format": "time"},
+                    "occursEvery": { 
+                        "type": "object", 
+                        "properties": {                         
+                            "intervalValue": {"type": "integer", "minimum": 0},
+                            "intervalType": { "type": "string", "enum": ["minute", "hour"] }            
+                        },
+                        "additionalProperties": false,
+                        "required": ["intervalValue", "intervalType"]
+                    }
+                },
+                "additionalProperties": false,
+                "required": ["start", "occursEvery"]
+            }
+        }
+    }
+}

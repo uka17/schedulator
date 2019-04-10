@@ -1,0 +1,24 @@
+{
+  "name": "scheduler",
+  "version": "1.0.0",
+  "description": "Schedule handling tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc --reporter=html --reporter=text mocha",
+    "mtest": "mocha",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "author": "Maj. Tom Johnson",
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^6.5.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-datetime": "^1.5.0",
+    "coveralls": "^3.0.2",
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
+    "supertest": "^3.3.0"
+  }
+}
