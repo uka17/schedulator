@@ -1,47 +1,16 @@
-var assert  = require('chai').assert;
-var Ajv = require('ajv');
-var scheduleModel = require('../lib/models.json');
-var testData = require('./test_data');
+let assert  = require('chai').assert;
+let scheduleModel = require('../lib/models.json');
+let testData = require('./test_data');
+let DataVsSchemaResult = require('../lib/tools').DataVsSchemaResult;
+let DataVsSchemaErrors = require('../lib/tools').DataVsSchemaErrors;
 
 //test data preparation
-var oneTimeSchedule = testData.oneTimeScheduleOK;
-var dailyScheduleOnce = testData.dailyScheduleOnceOK;
-var dailyScheduleEvery = testData.dailyScheduleEveryOK;
-var weeklySchedule = testData.weeklyScheduleOK;
-var monthlySchedule = testData.monthlyScheduleOK;
+let oneTimeSchedule = testData.oneTimeScheduleOK;
+let dailyScheduleOnce = testData.dailyScheduleOnceOK;
+let dailyScheduleEvery = testData.dailyScheduleEveryOK;
+let weeklySchedule = testData.weeklyScheduleOK;
+let monthlySchedule = testData.monthlyScheduleOK;
 //---
-/**
- * Returns result of object validation across one or several nested schemas
- * @param {object} testData Object to be validated
- * @param {object} schema Schema across which object should be validated
- * @param {object[]=} extraSchemaList Any extra schema list which should be used for validation
- * @returns {boolean} Result of object validation
- */
-function DataVsSchemaResult(testData, schema, extraSchemaList) {
-    //TODO: to be optimized with removeSchema(/.*/)
-    var ajv = new Ajv();
-    if(extraSchemaList)
-        extraSchemaList.forEach(function(e) { ajv.addSchema(e) }); 
-    let validate = ajv.compile(schema);
-    return validate(testData);
-}
-/**
- * Returns result of object validation across one or several nested schemas
- * @param {object} testData Object to be validated
- * @param {object} schema Schema across which object should be validated
- * @param {object[]=} extraSchemaList Any extra schema list which should be used for validation
- * @returns {string} List of errors
- */
-function DataVsSchemaErrors(testData, schema, extraSchema) {
-    //TODO: to be optimized with removeSchema(/.*/)
-    var ajv = new Ajv();
-    if(extraSchema)
-        extraSchema.forEach(function(e) { ajv.addSchema(e) }); 
-    let validate = ajv.compile(schema);
-    validate(testData);
-    return ajv.errorsText(validate.errors);
-}
-
 describe('schema validation', function() {
     describe('schedule', function() {
         describe('oneTime', function() {

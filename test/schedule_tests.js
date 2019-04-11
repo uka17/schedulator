@@ -3,11 +3,11 @@ var chai  = require('chai');
 chai.use(require('chai-datetime'))
 var assert = chai.assert;
 
-var getDateTime = require('../lib/date_time').getDateTime;
-var addDate = require('../lib/date_time').addDate;
-var monthList = require('../lib/date_time').monthList;
-var parseDateTime = require('../lib/date_time').parseDateTime;
-var getTimefromDateTime = require('../lib/date_time').getTimefromDateTime;
+var getDateTime = require('../lib/tools').getDateTime;
+var addDate = require('../lib/tools').addDate;
+var monthList = require('../lib/tools').monthList;
+var parseDateTime = require('../lib/tools').parseDateTime;
+var getTimefromDateTime = require('../lib/tools').getTimefromDateTime;
 var schedule = require('../lib/schedule');
 
 /**
