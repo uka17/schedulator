@@ -1,0 +1,17 @@
+.git/
+.vscode
+
+# for npm
+node_modules/
+npm-shrinkwrap.json
+
+# codes
+test/
+node_modules/
+
+# misc
+example/
+.gitignore
+.coveralls.yml
+.travis.yml
+package-lock.json

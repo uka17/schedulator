@@ -134,12 +134,12 @@ describe('schedule', function() {
             done();
         });                  
     });
-    describe('calculateNextRun', function() {        
+    describe('nextOccurrence', function() {        
         describe('common properties tests', function() {
             it('failed. enabled=false', function(done) {
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').oneTimeScheduleOK));
                 scheduleTestObject.enabled = false;
-                assert.isNull(schedule.calculateNextRun(scheduleTestObject));
+                assert.isNull(schedule.nextOccurrence(scheduleTestObject));
                 done();
             }); 
         });        
@@ -148,22 +148,22 @@ describe('schedule', function() {
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').oneTimeScheduleOK));
                 scheduleTestObject.oneTime = addDate(getDateTime(), 0, 0, 0, 3, 0, 0);
                 let nextRun = scheduleTestObject.oneTime;
-                assert.equalDate(schedule.calculateNextRun(scheduleTestObject), nextRun);
-                assert.equalTime(schedule.calculateNextRun(scheduleTestObject), nextRun);
+                assert.equalDate(schedule.nextOccurrence(scheduleTestObject), nextRun);
+                assert.equalTime(schedule.nextOccurrence(scheduleTestObject), nextRun);
                 done();
             });         
             it('success. added date', function(done) {
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').oneTimeScheduleOK));
                 scheduleTestObject.oneTime = addDate(getDateTime(), 0, 0, 1, 0, 0, 0);
                 let nextRun = scheduleTestObject.oneTime;
-                assert.equalDate(schedule.calculateNextRun(scheduleTestObject), nextRun);
-                assert.equalTime(schedule.calculateNextRun(scheduleTestObject), nextRun);
+                assert.equalDate(schedule.nextOccurrence(scheduleTestObject), nextRun);
+                assert.equalTime(schedule.nextOccurrence(scheduleTestObject), nextRun);
                 done();
             });      
             it('failure. not a date', function(done) {
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').oneTimeScheduleOK));
                 scheduleTestObject.oneTime = true;
-                assert.isNull(schedule.calculateNextRun(scheduleTestObject));
+                assert.isNull(schedule.nextOccurrence(scheduleTestObject));
                 done();
             });                                               
         });
@@ -175,7 +175,7 @@ describe('schedule', function() {
                 let nextRunDateTime = addDate(getDateTime(), 0, 0, 0, 0, 5, 0);
                 nextRunDateTime.setMilliseconds(0);
                 scheduleTestObject.dailyFrequency.occursOnceAt = getTimefromDateTime(nextRunDateTime);
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);        
                 assert.equalDate(calculationResult, nextRunDateTime);
                 assert.equalTime(calculationResult, nextRunDateTime);
@@ -188,7 +188,7 @@ describe('schedule', function() {
                 let nextRunDateTime = getDateTime();
                 nextRunDateTime.setUTCHours(23, 59, 59, 0);
                 scheduleTestObject.dailyFrequency.occursOnceAt = '23:59:59';
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);      
                 assert.equalDate(calculationResult, nextRunDateTime);
                 assert.equalTime(calculationResult, nextRunDateTime);
@@ -201,7 +201,7 @@ describe('schedule', function() {
                 let nextRunDateTime = addDate(getDateTime(), 0, 0, 6, 0, 15, 0); 
                 nextRunDateTime.setMilliseconds(0);
                 scheduleTestObject.dailyFrequency.occursOnceAt = getTimefromDateTime(nextRunDateTime);
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);               
                 assert.equalDate(calculationResult, nextRunDateTime);
                 assert.equalTime(calculationResult, nextRunDateTime);
@@ -214,7 +214,7 @@ describe('schedule', function() {
                 let nextRunDateTime = addDate(getDateTime(), 0, 0, 1, -1, 0, 0);
                 nextRunDateTime.setMilliseconds(0);
                 scheduleTestObject.dailyFrequency.occursOnceAt = getTimefromDateTime(nextRunDateTime);
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);            
                 assert.equalDate(calculationResult, nextRunDateTime);
                 assert.equalTime(calculationResult, nextRunDateTime);
@@ -227,7 +227,7 @@ describe('schedule', function() {
                 scheduleTestObject.endDateTime = getDateTime();
                 let nextRunDateTime = addDate(getDateTime(), 0, 0, 1, -1, 0, 0);
                 scheduleTestObject.dailyFrequency.occursOnceAt = getTimefromDateTime(nextRunDateTime);
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);           
                 assert.isNull(calculationResult);
                 done();
@@ -244,7 +244,7 @@ describe('schedule', function() {
                 scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'minute';
                 scheduleTestObject.dailyFrequency.occursEvery.intervalValue = 15;
                 //calculate test case data
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 //manual calculation for validation
                 let time = scheduleTestObject.dailyFrequency.start.split(':');
                 let nextRunDateTime = new Date(getDateTime().setUTCHours(time[0], time[1], time[2], 0));
@@ -267,7 +267,7 @@ describe('schedule', function() {
                 scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'hour';
                 scheduleTestObject.dailyFrequency.occursEvery.intervalValue = 5;
                 //calculate test case data
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 //manual calculation for validation
                 let time = scheduleTestObject.dailyFrequency.start.split(':');
                 let nextRunDateTime = new Date(getDateTime().setUTCHours(time[0], time[1], time[2], 0));
@@ -295,7 +295,7 @@ describe('schedule', function() {
                 scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'hour';
                 scheduleTestObject.dailyFrequency.occursEvery.intervalValue = 11;
                 //calculate test case data
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 //manual calculation for validation
                 let time = scheduleTestObject.dailyFrequency.start.split(':');
                 let nextRunDateTime = new Date(getDateTime().setUTCHours(time[0], time[1], time[2], 0));
@@ -325,7 +325,7 @@ describe('schedule', function() {
                 scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'hour';
                 scheduleTestObject.dailyFrequency.occursEvery.intervalValue = 2;
                 //calculate test case data
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 //manual calculation for validation
                 let currentDate = new Date(getDateTime().setUTCHours(0, 0, 0, 0));
                 let nextRunDateTime = new Date(scheduleTestObject.startDateTime);
@@ -356,7 +356,7 @@ describe('schedule', function() {
                 scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'hour';
                 scheduleTestObject.dailyFrequency.occursEvery.intervalValue = 23;
                 //calculate test case data
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 //manual calculation for validation
                 let currentDate = new Date(getDateTime().setUTCHours(0, 0, 0, 0));
                 let nextRunDateTime = new Date(scheduleTestObject.startDateTime);
@@ -394,7 +394,7 @@ describe('schedule', function() {
                 scheduleTestObject.dailyFrequency.occursEvery.intervalValue = 59;
                 scheduleTestObject.endDateTime = getDateTime();
                 //calculate test case data
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 logSchedule(scheduleTestObject, calculationResult, null);
                 //assertion
                 assert.isNull(calculationResult);
@@ -409,7 +409,7 @@ describe('schedule', function() {
                 scheduleTestObject.startDateTime = parseDateTime('2084-01-20T10:00:00.000Z');
                 scheduleTestObject.dayOfWeek = ['wed', 'fri'];
                 scheduleTestObject.eachNWeek = 1;
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = parseDateTime('2084-01-21T11:11:11.000Z');
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
                 assert.equalDate(calculationResult, nextRunDateTime);
@@ -421,7 +421,7 @@ describe('schedule', function() {
                 scheduleTestObject.startDateTime = parseDateTime('2084-01-20T10:00:00.000Z');
                 scheduleTestObject.dayOfWeek = ['sun'];
                 scheduleTestObject.eachNWeek = 1;
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = parseDateTime('2084-01-23T11:11:11.000Z');
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
                 assert.equalDate(calculationResult, nextRunDateTime);
@@ -433,7 +433,7 @@ describe('schedule', function() {
                 scheduleTestObject.startDateTime = parseDateTime('2084-01-20T10:00:00.000Z');
                 scheduleTestObject.dayOfWeek = ['mon', 'wed', 'fri'];
                 scheduleTestObject.eachNWeek = 2;
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = parseDateTime('2084-01-24T11:11:11.000Z');
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
                 assert.equalDate(calculationResult, nextRunDateTime);
@@ -455,7 +455,7 @@ describe('schedule', function() {
                 //find Sunday of week where to run
                 nextRunDateTime = addDate(nextRunDateTime, 0, 0, -nextRunDateTime.getUTCDay()+1, 0, 0, 0);
                 nextRunDateTime.setUTCHours(11, 11, 11, 0);
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject); 
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject); 
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
                 assert.equalDate(calculationResult, nextRunDateTime);
                 assert.equalTime(calculationResult, nextRunDateTime);         
@@ -474,7 +474,7 @@ describe('schedule', function() {
                         "intervalValue": 2
                     }
                 };
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let xHour = getDateTime().getUTCHours();
                 xHour = xHour%2 == 0 ? 2 : 1;
                 let nextRunDateTime = getDateTime();
@@ -504,7 +504,7 @@ describe('schedule', function() {
                             "intervalValue": 13
                         }
                     };
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = getDateTime();    
                 let xHour = getDateTime().getUTCHours(); 
                 nextRunDateTime.setUTCHours(13, 0, 0, 0);                                           
@@ -521,7 +521,7 @@ describe('schedule', function() {
                 scheduleTestObject.dayOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
                 scheduleTestObject.eachNWeek = 1;
                 scheduleTestObject.dailyFrequency.occursOnceAt = "00:00:01";
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = getDateTime();
                 nextRunDateTime.setUTCHours(0, 0, 1, 0);                
                 nextRunDateTime = addDate(nextRunDateTime, 0, 0, 1, 0, 0, 0);
@@ -536,7 +536,7 @@ describe('schedule', function() {
                 scheduleTestObject.dayOfWeek = ['wed', 'fri'];
                 scheduleTestObject.eachNWeek = 1;
                 scheduleTestObject.endDateTime = parseDateTime('2018-10-01T10:00:00.000Z');
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 logSchedule(scheduleTestObject, calculationResult);
                 assert.isNull(calculationResult);
                 done();
@@ -550,7 +550,7 @@ describe('schedule', function() {
                 scheduleTestObject.month = ['jan'];
                 scheduleTestObject.day = [1];
                 scheduleTestObject.dailyFrequency = { "occursOnceAt": "00:00:00" };                
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = parseDateTime('2020-01-01T00:00:00.000Z');
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
                 assert.equalDate(calculationResult, nextRunDateTime);
@@ -563,7 +563,7 @@ describe('schedule', function() {
                 scheduleTestObject.month = ['oct'];
                 scheduleTestObject.day = [15, 17, 19];
                 scheduleTestObject.dailyFrequency = { "occursOnceAt": "07:00:00" };                
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = parseDateTime('2019-10-15T07:00:00.000Z');
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
                 assert.equalDate(calculationResult, nextRunDateTime);
@@ -577,7 +577,7 @@ describe('schedule', function() {
                 let currentDay = getDateTime().getUTCDate();
                 scheduleTestObject.day = [currentDay - 1, currentDay, currentDay + 1];
                 scheduleTestObject.dailyFrequency = { "occursOnceAt": "00:01:00" };     
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = getDateTime();
                 nextRunDateTime.setUTCDate(scheduleTestObject.day[2]);
                 nextRunDateTime.setUTCHours(0, 1, 0, 0);
@@ -593,7 +593,7 @@ describe('schedule', function() {
                 scheduleTestObject.day = [getDateTime().getUTCDate()];
                 //5 minutes ago
                 scheduleTestObject.dailyFrequency = { "occursOnceAt": `${getDateTime().getUTCHours()}:${getDateTime().getMinutes() - 5}:${getDateTime().getSeconds()}` };                         
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = addDate(getDateTime(), 1, 0, 0, 0, -5);
                 nextRunDateTime.setMilliseconds(0);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
@@ -608,7 +608,7 @@ describe('schedule', function() {
                 scheduleTestObject.day = [getDateTime().getUTCDate()];
                 //5 minutes in future
                 scheduleTestObject.dailyFrequency = { "occursOnceAt": `${getDateTime().getUTCHours()}:${getDateTime().getMinutes() + 5}:${getDateTime().getSeconds()}` };                         
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = addDate(getDateTime(), 0, 0, 0, 0, +5);
                 nextRunDateTime.setMilliseconds(0);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
@@ -622,7 +622,7 @@ describe('schedule', function() {
                 scheduleTestObject.month =  monthList.slice(getDateTime().getUTCMonth(), getDateTime().getUTCMonth() + 1);
                 scheduleTestObject.day = [getDateTime().getUTCDate()];
                 scheduleTestObject.dailyFrequency = { 'start': '12:00:00', 'occursEvery': {'intervalValue': 13, 'intervalType': 'hour'}}
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = addDate(getDateTime(), 1);
                 nextRunDateTime.setUTCHours(12, 0, 0, 0);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
@@ -636,7 +636,7 @@ describe('schedule', function() {
                 scheduleTestObject.month =  monthList.slice(getDateTime().getUTCMonth(), getDateTime().getUTCMonth() + 1);
                 scheduleTestObject.day = [getDateTime().getUTCDate() + 1, getDateTime().getUTCDate()];
                 scheduleTestObject.dailyFrequency = { 'start': '12:00:00', 'occursEvery': {'intervalValue': 13, 'intervalType': 'hour'}}
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = addDate(getDateTime(), 0, 0, 1);
                 nextRunDateTime.setUTCHours(12, 0, 0, 0);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
@@ -651,7 +651,7 @@ describe('schedule', function() {
                 scheduleTestObject.month = ['jan'];
                 scheduleTestObject.day = [1];
                 scheduleTestObject.dailyFrequency = { "occursOnceAt": "00:00:00" };                
-                let calculationResult = schedule.calculateNextRun(scheduleTestObject);   
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 logSchedule(scheduleTestObject, calculationResult, null);
                 assert.isNull(calculationResult);
                 done();
