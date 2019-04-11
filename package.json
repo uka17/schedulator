@@ -1,5 +1,5 @@
 {
-  "name": "scheduler",
+  "name": "schedulator",
   "version": "1.0.0",
   "description": "Schedule handling tool",
   "main": "index.js",
