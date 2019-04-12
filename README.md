@@ -1,4 +1,5 @@
 # schedulator
+[dailyFrequency](#dailyFrequency)
 Simple schedule handling tool. Allows to create JSON schedule scheme and calculate next run based on it. Scheme has clear, readable and people-friendly format.
 ## Installation
 `~$ npm install schedulator`
@@ -28,9 +29,9 @@ let scheduleTestObject =
 console.log(schedule.nextOccurrence(scheduleTestObject));
 //2019-01-01T01:00:00.000Z
 ```
-## 4. Schedule object
+## Schedule object
 Schedule object describes scheduling rule in JSON format and can be presented by one of next entity:
-### 1. oneTime
+### oneTime
 Event happens only once and is not going to be repeated.
 
  - `oneTime` - UTC date and time of event in ISO format
