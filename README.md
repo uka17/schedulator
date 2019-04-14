@@ -51,7 +51,7 @@ Event happens one per each `n` day according to [dailyFrequency](#dailyFrequency
 
 - `startDateTime` - string, required. UTC date and time in ISO format since when schedule starts to be active.
 - `endDateTime` - string, optional. UTC date and time in ISO format till when schedule is active. `nextOccurrence` returns `null` if this date is earlier when current date and time. Schedule without this attribute will always be active.
-- `eachNDay` - integer, required. Frequency of occurrence. 
+- `eachNDay` - integer, required. Frequency of occurrence. Minimum 1.
 - `dailyFrequency` - object, required. Represents occurrence of event in scope of the day (qv [dailyFrequency](#dailyFrequency)).
 
 ```javascript
@@ -59,8 +59,8 @@ let scheduleTestObject =
 { 
 	"startDateTime": "2018-01-31T20:54:23.071Z",
 	"endDateTime": "2019-01-31T20:54:23.071Z",
-    "eachNDay": 2,
-    "dailyFrequency": { "occursOnceAt": "11:11:11"}
+	"eachNDay": 2,
+	"dailyFrequency": { "occursOnceAt": "11:11:11"}
 }
 //
 ```

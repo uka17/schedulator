@@ -11,31 +11,25 @@
             "oneTime": {
                 "type": "object",
                 "properties": {
-                    "name": {"type": "string"},
-                    "enabled": {"type": "boolean"},
                     "oneTime": {"type": "string", "format": "date-time"}
                 },
                 "additionalProperties": false,
-                "required": ["name", "enabled", "oneTime"]  
+                "required": ["oneTime"]  
             },
             "daily": {
                 "type": "object",
                 "properties": {
-                    "name": {"type": "string"},
-                    "enabled": {"type": "boolean"},
                     "startDateTime": {"type": "string", "format": "date-time"},
                     "endDateTime": {"type": "string", "format": "date-time"},
                     "eachNDay": {"type": "integer", "minimum": 1},
                     "dailyFrequency": {"$ref": "daily#/"}
                 },
                 "additionalProperties": false,
-                "required": ["name", "enabled",  "startDateTime", "eachNDay", "dailyFrequency"]
+                "required": ["startDateTime", "eachNDay", "dailyFrequency"]
             },
             "weekly": {
                 "type": "object",
                 "properties": {
-                    "name": {"type": "string"},
-                    "enabled": {"type": "boolean"},
                     "startDateTime": {"type": "string", "format": "date-time"},
                     "endDateTime": {"type": "string", "format": "date-time"},
                     "eachNWeek": {"type": "integer", "minimum": 1},
@@ -48,13 +42,11 @@
                     "dailyFrequency": {"$ref": "daily#/"}
                 },
                 "additionalProperties": false,
-                "required": ["name", "enabled", "startDateTime", "eachNWeek", "dayOfWeek", "dailyFrequency"]
+                "required": ["startDateTime", "eachNWeek", "dayOfWeek", "dailyFrequency"]
             },
             "monthly": {
                 "type": "object",
                 "properties": {
-                    "name": {"type": "string"},
-                    "enabled": {"type": "boolean"},
                     "startDateTime": {"type": "string", "format": "date-time"},
                     "endDateTime": {"type": "string", "format": "date-time"},
                     "month": {
@@ -72,7 +64,7 @@
                     "dailyFrequency": {"$ref": "daily#/"}
                 },
                 "additionalProperties": false,
-                "required": ["name", "enabled", "startDateTime", "month", "day", "dailyFrequency"]
+                "required": ["startDateTime", "month", "day", "dailyFrequency"]
             }
         }
     }

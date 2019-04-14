@@ -8,6 +8,7 @@ var addDate = require('../lib/tools').addDate;
 var monthList = require('../lib/tools').monthList;
 var parseDateTime = require('../lib/tools').parseDateTime;
 var getTimefromDateTime = require('../lib/tools').getTimefromDateTime;
+var leadZero = require('../lib/tools').leadZero;
 var schedule = require('../lib/schedule');
 
 /**
@@ -50,127 +51,46 @@ function logSchedule(schedule, calculated, expected, showDebug) {
         console.log('expexted run  : ', expected);  
     }
 }
-
 describe('schedule', function() {
-    describe('small tools and helpers', function() {
-        it('getTimefromDateTime. date provided and leading zeroes', function(done) {
-            let nDateTime = parseDateTime('2018-01-31T02:03:04.071Z');
-            assert.equal(getTimefromDateTime(nDateTime), '02:03:04');
+    describe('valid not valid', function() {           
+        it('valid', function(done) {                
+            let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').oneTimeScheduleOK));
+            scheduleTestObject.oneTime = '2119-06-10T02:02:02.071Z';
+            assert.isNotNull(schedule.nextOccurrence(scheduleTestObject));
             done();
-        });           
-        it('getTimefromDateTime. date provided and no need to add leading zeroes', function(done) {
-            let nDateTime = parseDateTime('2018-01-31T12:13:14.071Z');
-            assert.equal(getTimefromDateTime(nDateTime), '12:13:14');
-            done();
-        });                   
-        it('getTimefromDateTime. date is not provided', function(done) {
-            assert.include( (new Date()).toUTCString(), getTimefromDateTime()); 
-            done();
-        });           
-        it('addDate 1+', function(done) {
-            let expected = parseDateTime('2018-01-31T02:02:02.071Z');        
-            let initial = parseDateTime('2018-01-31T01:01:01.071Z');
-            initial = addDate(initial, 0, 0, 0, 1, 1, 1);
-            assert.equalDate(initial, expected);
-            assert.equalTime(initial, expected);
-            done();
-        });         
-        it('addDate 2+', function(done) {
-            let initial = parseDateTime('2018-02-28T23:00:00.000Z');            
-            let expected = parseDateTime('2018-03-01T01:00:00.000Z');
-            initial = addDate(initial, 0, 0, 0, 2);
-            assert.equalDate(initial, expected);
-            assert.equalTime(initial, expected);
-            done();
-        });            
-        it('addDate 3+', function(done) {
-            let initial = parseDateTime('2018-06-10T02:02:02.071Z');            
-            let expected = parseDateTime('2019-06-10T02:02:02.071Z');
-            initial = addDate(initial, 1, 0, 0, 0, 0, 0);
-            assert.equalDate(initial, expected);
-            assert.equalTime(initial, expected);
-            done();
-        });             
-        it('addDate 4-', function(done) {
-            let expected = parseDateTime('2018-01-31T01:01:01.000Z');            
-            let initial = parseDateTime('2018-01-31T02:02:02.000Z');
-            initial = addDate(initial, 0, 0, 0, -1, -1, -1);
-            assert.equalDate(initial, expected);
-            assert.equalTime(initial, expected);
-            done();
-        });         
-        it('addDate 5-', function(done) {
-            let initial = parseDateTime('2018-05-01T01:00:00.000Z');            
-            let expected = parseDateTime('2018-04-30T23:00:00.000Z');
-            initial = addDate(initial, 0, 0, 0, -2, 0, 0);
-            assert.equalDate(initial, expected);
-            assert.equalTime(initial, expected);
-            done();
-        });            
-        it('addDate 6-', function(done) {
-            let initial = parseDateTime('2019-06-10T02:02:02.071Z');            
-            let expected = parseDateTime('2018-06-10T02:02:02.071Z');
-            initial = addDate(initial, -1, 0, 0, 0, 0, 0);
-            assert.equalDate(initial, expected);
-            assert.equalTime(initial, expected);
-            done();
-        });          
-        it('addDate 7+, undefined parameter', function(done) {
-            let initial = parseDateTime('2001-01-01T01:01:01.000Z');            
-            let expected = parseDateTime('2002-01-01T01:01:01.000Z');
-            initial = addDate(initial, 1);
-            assert.equalDate(initial, expected);
-            assert.equalTime(initial, expected);
-            done();
-        });                  
-        it('parseDateTime. success', function(done) {
-            let dateTime = new Date(Date.parse('2019-06-10T02:02:02.071Z'));
-            assert.equalDate(parseDateTime('2019-06-10T02:02:02.071Z'), dateTime);
-            assert.equalTime(parseDateTime('2019-06-10T02:02:02.071Z'), dateTime);
-            done();
-        });        
-        it('parseDateTime. failure', function(done) {
-            assert.isNull(parseDateTime(true));
-            done();
-        });                  
-    });
-    describe('nextOccurrence', function() {        
-        describe('common properties tests', function() {
-            it('failed. enabled=false', function(done) {
-                let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').oneTimeScheduleOK));
-                scheduleTestObject.enabled = false;
-                assert.isNull(schedule.nextOccurrence(scheduleTestObject));
-                done();
-            }); 
-        });        
+        });                                                         
+    });    
+    describe('nextOccurrence', function() {           
         describe('oneTime', function() {
-            it('success. added time', function(done) {
+            it('success. added time', function(done) {                
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').oneTimeScheduleOK));
-                scheduleTestObject.oneTime = addDate(getDateTime(), 0, 0, 0, 3, 0, 0);
-                let nextRun = scheduleTestObject.oneTime;
+                scheduleTestObject.oneTime = addDate(getDateTime(), 0, 0, 0, 6, 0, 0).toISOString();
+                let nextRun = parseDateTime(scheduleTestObject.oneTime);
                 assert.equalDate(schedule.nextOccurrence(scheduleTestObject), nextRun);
                 assert.equalTime(schedule.nextOccurrence(scheduleTestObject), nextRun);
                 done();
             });         
             it('success. added date', function(done) {
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').oneTimeScheduleOK));
-                scheduleTestObject.oneTime = addDate(getDateTime(), 0, 0, 1, 0, 0, 0);
-                let nextRun = scheduleTestObject.oneTime;
+                scheduleTestObject.oneTime = addDate(getDateTime(), 0, 0, 1, 0, 0, 0).toISOString();
+                let nextRun = parseDateTime(scheduleTestObject.oneTime);
                 assert.equalDate(schedule.nextOccurrence(scheduleTestObject), nextRun);
                 assert.equalTime(schedule.nextOccurrence(scheduleTestObject), nextRun);
                 done();
             });      
-            it('failure. not a date', function(done) {
+            it('success. far future', function(done) {
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').oneTimeScheduleOK));
-                scheduleTestObject.oneTime = true;
-                assert.isNull(schedule.nextOccurrence(scheduleTestObject));
+                scheduleTestObject.oneTime = '2039-06-10T02:02:02.071Z';
+                let nextRun = parseDateTime(scheduleTestObject.oneTime);
+                assert.equalDate(schedule.nextOccurrence(scheduleTestObject), nextRun);
+                assert.equalTime(schedule.nextOccurrence(scheduleTestObject), nextRun);
                 done();
             });                                               
         });
         describe('eachNDay. occursOnceAt', function() {           
             it('success. run at now+5min', function(done) {
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleOnceOK));
-                scheduleTestObject.startDateTime = getDateTime();
+                scheduleTestObject.startDateTime = getDateTime().toISOString();
                 scheduleTestObject.eachNDay = 1;
                 let nextRunDateTime = addDate(getDateTime(), 0, 0, 0, 0, 5, 0);
                 nextRunDateTime.setMilliseconds(0);
@@ -183,7 +103,7 @@ describe('schedule', function() {
             });      
             it('success. run at 23:59:59', function(done) {
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleOnceOK));
-                scheduleTestObject.startDateTime = addDate(getDateTime(), 0, 0, -15, 0, 0, 0);
+                scheduleTestObject.startDateTime = addDate(getDateTime(), 0, 0, -15, 0, 0, 0).toISOString();
                 scheduleTestObject.eachNDay = 1;
                 let nextRunDateTime = getDateTime();
                 nextRunDateTime.setUTCHours(23, 59, 59, 0);
@@ -196,7 +116,7 @@ describe('schedule', function() {
             });                
             it('success. run every 7 days at now+15min', function(done) {
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleOnceOK));
-                scheduleTestObject.startDateTime = addDate(getDateTime(), 0, 0, -15, 0, 0, 0);
+                scheduleTestObject.startDateTime = addDate(getDateTime(), 0, 0, -15, 0, 0, 0).toISOString();
                 scheduleTestObject.eachNDay = 7;
                 let nextRunDateTime = addDate(getDateTime(), 0, 0, 6, 0, 15, 0); 
                 nextRunDateTime.setMilliseconds(0);
@@ -209,7 +129,7 @@ describe('schedule', function() {
             });             
             it('success. run at now+1day-1hour', function(done) {
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleOnceOK));
-                scheduleTestObject.startDateTime = addDate(getDateTime(), 0, 0, -1, -1, 0, 0);
+                scheduleTestObject.startDateTime = addDate(getDateTime(), 0, 0, -1, -1, 0, 0).toISOString();
                 scheduleTestObject.eachNDay = 1;
                 let nextRunDateTime = addDate(getDateTime(), 0, 0, 1, -1, 0, 0);
                 nextRunDateTime.setMilliseconds(0);
@@ -222,10 +142,11 @@ describe('schedule', function() {
             });               
             it('failure. endDateTime restriction', function(done) {
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleOnceOK));
-                scheduleTestObject.startDateTime = addDate(getDateTime(), 0, 0, -1, -1, 0, 0);
+                scheduleTestObject.startDateTime = addDate(getDateTime(), 0, 0, -1, -1, 0, 0).toISOString();
                 scheduleTestObject.eachNDay = 1;
-                scheduleTestObject.endDateTime = getDateTime();
+                scheduleTestObject.endDateTime = getDateTime().toISOString();
                 let nextRunDateTime = addDate(getDateTime(), 0, 0, 1, -1, 0, 0);
+                nextRunDateTime.setMilliseconds(0);
                 scheduleTestObject.dailyFrequency.occursOnceAt = getTimefromDateTime(nextRunDateTime);
                 let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);           
@@ -238,7 +159,7 @@ describe('schedule', function() {
             it('success. run every 15 minutes starting 10:07:00', function(done) {
                 //test data preparation
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleEveryOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.eachNDay = 1;                
                 scheduleTestObject.dailyFrequency.start = '10:07:00';
                 scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'minute';
@@ -261,7 +182,7 @@ describe('schedule', function() {
             it('success. run every 5 hours starting 05:55:00', function(done) {
                 //test data preparation
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleEveryOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.eachNDay = 1;                
                 scheduleTestObject.dailyFrequency.start = '05:55:00';
                 scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'hour';
@@ -289,7 +210,7 @@ describe('schedule', function() {
             it('success. run every 11 hours starting 05:00:00 (date owerwhelming)', function(done) {
                 //test data preparation
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleEveryOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.eachNDay = 1;                
                 scheduleTestObject.dailyFrequency.start = '05:00:00';
                 scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'hour';
@@ -319,7 +240,7 @@ describe('schedule', function() {
             it('success. run every 2 hours starting 09:18:36, each 12 days', function(done) {
                 //test data preparation
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleEveryOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-07-01T12:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-07-01T12:00:00.000Z';
                 scheduleTestObject.eachNDay = 12;                
                 scheduleTestObject.dailyFrequency.start = '09:18:36';
                 scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'hour';
@@ -350,7 +271,7 @@ describe('schedule', function() {
             it('success. run every 23 hours starting 19:00:00, each 3 days (date owerwhelming)', function(done) {
                 //test data preparation
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleEveryOK));
-                scheduleTestObject.startDateTime = addDate(getDateTime(), 0, 0, -3, 0, 0, 0);
+                scheduleTestObject.startDateTime = addDate(getDateTime(), 0, 0, -3, 0, 0, 0).toISOString();
                 scheduleTestObject.eachNDay = 3;                
                 scheduleTestObject.dailyFrequency.start = '19:00:00';
                 scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'hour';
@@ -387,12 +308,12 @@ describe('schedule', function() {
             it('failure. run every 59 minutes starting 10:10:10, endDateTime restriction', function(done) {
                 //test data preparation
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleEveryOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.eachNDay = 1;                
                 scheduleTestObject.dailyFrequency.start = '10:10:10';
                 scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'minute';
                 scheduleTestObject.dailyFrequency.occursEvery.intervalValue = 59;
-                scheduleTestObject.endDateTime = getDateTime();
+                scheduleTestObject.endDateTime = getDateTime().toISOString();
                 //calculate test case data
                 let calculationResult = schedule.nextOccurrence(scheduleTestObject);
                 logSchedule(scheduleTestObject, calculationResult, null);
@@ -406,7 +327,7 @@ describe('schedule', function() {
         describe('eachNWeek', function() {     
             it('success. run every 1st week (future)', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').weeklyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2084-01-20T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2084-01-20T10:00:00.000Z';
                 scheduleTestObject.dayOfWeek = ['wed', 'fri'];
                 scheduleTestObject.eachNWeek = 1;
                 let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
@@ -418,7 +339,7 @@ describe('schedule', function() {
             });        
             it('success. run every 1st week at sun (future)', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').weeklyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2084-01-20T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2084-01-20T10:00:00.000Z';
                 scheduleTestObject.dayOfWeek = ['sun'];
                 scheduleTestObject.eachNWeek = 1;
                 let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
@@ -430,7 +351,7 @@ describe('schedule', function() {
             });                        
             it('success. run every 2st week (future)', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').weeklyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2084-01-20T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2084-01-20T10:00:00.000Z';
                 scheduleTestObject.dayOfWeek = ['mon', 'wed', 'fri'];
                 scheduleTestObject.eachNWeek = 2;
                 let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
@@ -443,7 +364,7 @@ describe('schedule', function() {
             it('success. run every 3rd week', function(done) {
                //21-27 Oct, 24 Oct
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').weeklyScheduleOK));
-                scheduleTestObject.startDateTime = addDate(getDateTime(), 0, 0, -35, 0, 0, 0);
+                scheduleTestObject.startDateTime = addDate(getDateTime(), 0, 0, -35, 0, 0, 0).toISOString();
                 scheduleTestObject.eachNWeek = 3;
                 scheduleTestObject.dayOfWeek = ['mon'];
                 //find Sunday
@@ -463,7 +384,7 @@ describe('schedule', function() {
             });                  
             it('success. run every 1st week, everyday, every 2 hours', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').weeklyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.dayOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
                 scheduleTestObject.eachNWeek = 1;
                 scheduleTestObject.dailyFrequency = { 
@@ -493,7 +414,7 @@ describe('schedule', function() {
             });              
             it('success. run every 1st week, everyday, every 13 hours (date overwhelming)', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').weeklyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.dayOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
                 scheduleTestObject.eachNWeek = 1;
                 scheduleTestObject.dailyFrequency = { 
@@ -517,7 +438,7 @@ describe('schedule', function() {
             });
             it('success. run every 1st week, everyday, happened today, but already missed', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').weeklyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.dayOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
                 scheduleTestObject.eachNWeek = 1;
                 scheduleTestObject.dailyFrequency.occursOnceAt = "00:00:01";
@@ -532,10 +453,10 @@ describe('schedule', function() {
             });               
             it('failed. endDateTime restriction', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').weeklyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-20T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-20T10:00:00.000Z';
                 scheduleTestObject.dayOfWeek = ['wed', 'fri'];
                 scheduleTestObject.eachNWeek = 1;
-                scheduleTestObject.endDateTime = parseDateTime('2018-10-01T10:00:00.000Z');
+                scheduleTestObject.endDateTime = parseDateTime('2018-10-01T10:00:00.000Z').toISOString();
                 let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 logSchedule(scheduleTestObject, calculationResult);
                 assert.isNull(calculationResult);
@@ -546,7 +467,7 @@ describe('schedule', function() {
         describe('month', function() {     
             it('success. run every NY', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').monthlyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.month = ['jan'];
                 scheduleTestObject.day = [1];
                 scheduleTestObject.dailyFrequency = { "occursOnceAt": "00:00:00" };                
@@ -559,7 +480,7 @@ describe('schedule', function() {
             });        
             it('success. oct 15, 17, 19 once at 07:00', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').monthlyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.month = ['oct'];
                 scheduleTestObject.day = [15, 17, 19];
                 scheduleTestObject.dailyFrequency = { "occursOnceAt": "07:00:00" };                
@@ -572,7 +493,7 @@ describe('schedule', function() {
             });
             it('success. middle of days interval once at 00:01', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').monthlyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.month =  monthList.slice(getDateTime().getUTCMonth(), getDateTime().getUTCMonth() + 1);
                 let currentDay = getDateTime().getUTCDate();
                 scheduleTestObject.day = [currentDay - 1, currentDay, currentDay + 1];
@@ -586,30 +507,30 @@ describe('schedule', function() {
                 assert.equalTime(calculationResult, nextRunDateTime);
                 done();
             });              
-            it('success. happend 5 minutes ago', function(done) {               
+            it('success. happend 1 minutes ago', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').monthlyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.month =  monthList.slice(getDateTime().getUTCMonth(), getDateTime().getUTCMonth() + 1);
                 scheduleTestObject.day = [getDateTime().getUTCDate()];
-                //5 minutes ago
-                scheduleTestObject.dailyFrequency = { "occursOnceAt": `${getDateTime().getUTCHours()}:${getDateTime().getMinutes() - 5}:${getDateTime().getSeconds()}` };                         
+                //1 minutes ago
+                scheduleTestObject.dailyFrequency = { "occursOnceAt": `${leadZero(getDateTime().getUTCHours())}:${leadZero(getDateTime().getMinutes() - 1)}:${leadZero(getDateTime().getSeconds())}` };                         
                 let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
-                let nextRunDateTime = addDate(getDateTime(), 1, 0, 0, 0, -5);
+                let nextRunDateTime = addDate(getDateTime(), 1, 0, 0, 0, -1);
                 nextRunDateTime.setMilliseconds(0);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
                 assert.equalDate(calculationResult, nextRunDateTime);
                 assert.equalTime(calculationResult, nextRunDateTime);
                 done();
             });               
-            it('success. will happen in 5 minutes', function(done) {               
+            it('success. will happen in 1 minutes', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').monthlyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.month =  monthList.slice(getDateTime().getUTCMonth(), getDateTime().getUTCMonth() + 1);
                 scheduleTestObject.day = [getDateTime().getUTCDate()];
-                //5 minutes in future
-                scheduleTestObject.dailyFrequency = { "occursOnceAt": `${getDateTime().getUTCHours()}:${getDateTime().getMinutes() + 5}:${getDateTime().getSeconds()}` };                         
+                //1 minutes in future
+                scheduleTestObject.dailyFrequency = { "occursOnceAt": `${leadZero(getDateTime().getUTCHours())}:${leadZero(getDateTime().getMinutes() + 1)}:${leadZero(getDateTime().getSeconds())}` };                                        
                 let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
-                let nextRunDateTime = addDate(getDateTime(), 0, 0, 0, 0, +5);
+                let nextRunDateTime = addDate(getDateTime(), 0, 0, 0, 0, +1);
                 nextRunDateTime.setMilliseconds(0);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
                 assert.equalDate(calculationResult, nextRunDateTime);
@@ -618,7 +539,7 @@ describe('schedule', function() {
             });                  
             it('success. happen every 13 hours (date overwhelming) - fail before 12', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').monthlyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.month =  monthList.slice(getDateTime().getUTCMonth(), getDateTime().getUTCMonth() + 1);
                 scheduleTestObject.day = [getDateTime().getUTCDate()];
                 scheduleTestObject.dailyFrequency = { 'start': '12:00:00', 'occursEvery': {'intervalValue': 13, 'intervalType': 'hour'}}
@@ -632,7 +553,8 @@ describe('schedule', function() {
             });              
             it('success. happen every 13 hours (date overwhelming with next day) - fail before 12', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').monthlyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
+                scheduleTestObject.endDateTime = '2118-01-01T10:00:00.000Z';
                 scheduleTestObject.month =  monthList.slice(getDateTime().getUTCMonth(), getDateTime().getUTCMonth() + 1);
                 scheduleTestObject.day = [getDateTime().getUTCDate() + 1, getDateTime().getUTCDate()];
                 scheduleTestObject.dailyFrequency = { 'start': '12:00:00', 'occursEvery': {'intervalValue': 13, 'intervalType': 'hour'}}
@@ -646,8 +568,8 @@ describe('schedule', function() {
             });   
             it('failed. run every NY, endDateTime restriction (5 minutes ago)', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').monthlyScheduleOK));
-                scheduleTestObject.startDateTime = parseDateTime('2018-01-01T10:00:00.000Z');
-                scheduleTestObject.endDateTime = addDate(getDateTime(), 0, 0, 0, 0, -5);
+                scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
+                scheduleTestObject.endDateTime = addDate(getDateTime(), 0, 0, 0, 0, -5).toISOString();
                 scheduleTestObject.month = ['jan'];
                 scheduleTestObject.day = [1];
                 scheduleTestObject.dailyFrequency = { "occursOnceAt": "00:00:00" };                
