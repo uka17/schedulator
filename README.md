@@ -31,7 +31,7 @@ console.log(schedule.nextOccurrence(scheduleTestObject));
 //2019-01-01T01:00:00.000Z
 ```
 ## Schedule object
-Schedule object describes scheduling rule in JSON format and can be presented by one time, daily, weekly or monthly entry.
+Schedule object describes scheduling rule in JSON format and can be presented by `one time`, `daily`, `weekly` or `monthly` entry.
 
 > All schemas will be validated before calculation of next occurence. Exception with error will be thrown in case of any schema mismath. 
 
@@ -43,7 +43,7 @@ Event happens only once and is not going to be repeated.
 ```javascript
 let scheduleTestObject = 
 { 
-    "oneTime": "2019-01-01T01:00:00.000Z"
+ "oneTime": "2019-01-01T01:00:00.000Z"
 }
 ```
 ### daily
@@ -57,10 +57,10 @@ Event happens ones per each `n` day according to [dailyFrequency](#dailyFrequenc
 ```javascript
 let scheduleTestObject = 
 { 
-	"startDateTime": "2020-01-31T20:54:23.071Z",
-	"endDateTime": "2021-01-31T20:54:23.071Z",
-	"eachNDay": 2,
-	"dailyFrequency": { "occursOnceAt": "11:11:11"}
+ "startDateTime": "2020-01-31T20:54:23.071Z",
+ "endDateTime": "2021-01-31T20:54:23.071Z",
+ "eachNDay": 2,
+ "dailyFrequency": { "occursOnceAt": "11:11:11"}
 }
 //2020-02-02T11:11:11.000Z
 ```
@@ -73,15 +73,16 @@ Event happens ones per each `n` week according to [dailyFrequency](#dailyFrequen
 - `dayOfWeek` - array of string, required. Which days of week event should be triggered. Array should contain unique elements. Reference: `["sun", "mon", "tue", "wed", "thu", "fri", "sat"]`
 - `dailyFrequency` - object, required. Represents occurrence of event in scope of the day (qv [dailyFrequency](#dailyFrequency)).
 
-> Note: Sunday is being considered as a first day of week. Array `dayOfWeek` can have any order. For example, both `["sun", "mon", "tue"]` and `["tue", "sun", "mon"]` variants are valid.
+> Sunday is being considered as a first day of week. 
+> Array `dayOfWeek` can have any order. For example, both `["sun", "mon", "tue"]` and `["tue", "sun", "mon"]` variants are valid.
 
 ```javascript
 let scheduleTestObject = {
-	"startDateTime": "2020-01-01T00:00:01.000Z",
-	"endDateTime": "2020-12-31T23:59:59.000Z",
-	"eachNWeek": 3,
-	"dayOfWeek": ['mon', 'wed', 'fri'],
-	"dailyFrequency": { "occursOnceAt": "11:11:11"}
+ "startDateTime": "2020-01-01T00:00:01.000Z",
+ "endDateTime": "2020-12-31T23:59:59.000Z",
+ "eachNWeek": 3,
+ "dayOfWeek": ['mon', 'wed', 'fri'],
+ "dailyFrequency": { "occursOnceAt": "11:11:11"}
 }	
 //2020-01-13T11:11:11.000Z
 ```
@@ -94,15 +95,15 @@ Event happens ones per each `n` month according to [dailyFrequency](#dailyFreque
 - `day` - array of integer, required. Which days of month event should be triggered. Array should contain unique elements. Each and every element should lie between 0 and 32.
 - `dailyFrequency` - object, required. Represents occurrence of event in scope of the day (qv [dailyFrequency](#dailyFrequency)).
 
-> Note: Arrays `month` and `day` can have any order. For example, all variants `["jul", "sep", "may"]` and `["may", "jul", "sep"]`, `[1, 2, 3]` and `[3, 2, 1]` are valid.
+> Arrays `month` and `day` can have any order. For example, all variants `["jul", "sep", "may"]` and `["may", "jul", "sep"]`, `[1, 2, 3]` and `[3, 2, 1]` are valid.
 
 ```javascript
 let scheduleTestObject = {
-	"startDateTime": "2020-01-01T00:00:01.000Z",
-	"endDateTime": "2020-12-31T23:59:59.000Z",
-    "month": ["jul", "sep"],
-    "day": [11, 2, 8, 1],
-    "dailyFrequency": { "occursOnceAt": "11:11:11"}
+ "startDateTime": "2020-01-01T00:00:01.000Z",
+ "endDateTime": "2020-12-31T23:59:59.000Z",
+ "month": ["jul", "sep"],
+ "day": [11, 2, 8, 1],
+ "dailyFrequency": { "occursOnceAt": "11:11:11"}
 }	
 //2020-07-01T11:11:11.000Z
 ```
