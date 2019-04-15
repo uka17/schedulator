@@ -199,8 +199,9 @@ describe('schema validation', function() {
                         it('incorrect "dailyFrequency.occursEvery.intervalValue" <0', function(done) {                                            
                             let nDailyScheduleEvery = JSON.parse(JSON.stringify(dailyScheduleEvery));
                             nDailyScheduleEvery.dailyFrequency.occursEvery.intervalValue = -1;
+                            console.log(nDailyScheduleEvery);
                             assert.equal(DataVsSchemaResult(nDailyScheduleEvery, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), false);
-                            assert.include(DataVsSchemaErrors(nDailyScheduleEvery, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), 'data.dailyFrequency.occursEvery.intervalValue should be >= 0');
+                            assert.include(DataVsSchemaErrors(nDailyScheduleEvery, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), 'data.dailyFrequency.occursEvery.intervalValue should be >= 1');
                             done();
                         }) 
                         it('incorrect "dailyFrequency.occursEvery.intervalType" type', function(done) {                                            
