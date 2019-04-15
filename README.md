@@ -166,7 +166,9 @@ console.log(schedule.nextOccurrence(scheduleTestObject));
 ```
 ## Tests
 Just a tests
+
 `~$ npm run mtest`
 
 Tests with coverage
+
 `~$ npm run test` 
