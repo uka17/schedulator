@@ -89,7 +89,7 @@
                     "occursEvery": { 
                         "type": "object", 
                         "properties": {                         
-                            "intervalValue": {"type": "integer", "minimum": 0},
+                            "intervalValue": {"type": "integer", "minimum": 1},
                             "intervalType": { "type": "string", "enum": ["minute", "hour"] }            
                         },
                         "additionalProperties": false,

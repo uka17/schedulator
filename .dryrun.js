@@ -1,10 +1,16 @@
 let schedule = require('./lib/schedule');
 
-let scheduleTestObject = {
-	"startDateTime": "2020-01-01T00:00:01.000Z",
-	"endDateTime": "2020-12-31T23:59:59.000Z",
-	"eachNWeek": 3,
-	"dayOfWeek": ['wed', 'fri', 'mon'],
-	"dailyFrequency": { "occursOnceAt": "11:11:11"}
-}	
+let scheduleTestObject = 
+{ 
+	"startDateTime": "2018-12-31T01:00:00.000Z",
+    "month": ["dec", "jul"],
+    "day": [29, 30, 31],
+    "dailyFrequency": { 
+		"start": "09:00:00", 
+		"occursEvery": {
+			"intervalValue": 90, 
+			"intervalType": "minute"
+		}
+	}
+}
 console.log(schedule.nextOccurrence(scheduleTestObject));
