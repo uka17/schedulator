@@ -1,6 +1,14 @@
 {
   "name": "schedulator",
-  "version": "1.0.4",
+  "version": "1.0.7",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uka17/schedulator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/uka17/schedulator/issues"
+  },
+  "homepage": "https://github.com/uka17/schedulator",
   "description": "Simple and human friendly scheduling tool",
   "main": "lib/schedule.js",
   "scripts": {
