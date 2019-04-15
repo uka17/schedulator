@@ -1,6 +1,7 @@
 # schedulator
 [![Coverage Status](https://coveralls.io/repos/github/uka17/schedulator/badge.svg?)](https://coveralls.io/github/uka17/schedulator)
 [![Build Status](https://travis-ci.org/uka17/schedulator.svg?branch=master)](https://travis-ci.org/uka17/schedulator)
+
 Simple schedule handling tool. Allows to create JSON schedule scheme and calculate next run based on it. Scheme has clear, readable and people-friendly format.
 ## Installation
 `~$ npm install schedulator`
