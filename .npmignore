@@ -11,6 +11,8 @@ node_modules/
 # misc
 example/
 .gitignore
+.babelrc
 .coveralls.yml
 .travis.yml
 package-lock.json
+.cache
