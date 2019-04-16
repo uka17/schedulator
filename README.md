@@ -164,11 +164,3 @@ let scheduleTestObject =
 console.log(schedule.nextOccurrence(scheduleTestObject));
 //2018-12-31T10:30:00.000Z
 ```
-## Tests
-Just a tests
-
-`~$ npm run mtest`
-
-Tests with coverage
-
-`~$ npm run test` 

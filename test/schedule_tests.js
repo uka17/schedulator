@@ -34,7 +34,8 @@ function logSchedule(schedule, calculated, expected, showDebug) {
         }
         if(schedule.hasOwnProperty('month')) {
             let scheduleMonthList = schedule.month.reduce((reducer, current) => reducer = reducer + ' ' + current , '');
-            interval = `months: ${scheduleMonthList}`;                
+            let scheduleDayList = schedule.day.reduce((reducer, current) => reducer = reducer + ' ' + current , '');
+            interval = `months: ${scheduleMonthList}, days: ${scheduleDayList}`;                
         }
         if(schedule.hasOwnProperty('oneTime')) {
             frequency = schedule.oneTime;
@@ -576,7 +577,7 @@ describe('schedule', function() {
                 assert.equalTime(calculationResult, nextRunDateTime);
                 done();
             });                  
-            it('success. happen every 13 hours (date overwhelming) - fail before 12', function(done) {               
+            it('success. happen every 13 hours (date overwhelming)', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').monthlyScheduleOK));
                 scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.month =  monthList.slice(getDateTime().getUTCMonth(), getDateTime().getUTCMonth() + 1);
@@ -585,12 +586,14 @@ describe('schedule', function() {
                 let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = addDate(getDateTime(), 1);
                 nextRunDateTime.setUTCHours(12, 0, 0, 0);
+                if(getDateTime().getUTCHours() < 12)
+                    nextRunDateTime = addDate(nextRunDateTime, -1);
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
                 assert.equalDate(calculationResult, nextRunDateTime);
                 assert.equalTime(calculationResult, nextRunDateTime);
                 done();
             });              
-            it('success. happen every 13 hours (date overwhelming with next day) - fail before 12', function(done) {               
+            it('success. happen every 13 hours (date overwhelming with next day)', function(done) {               
                 let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').monthlyScheduleOK));
                 scheduleTestObject.startDateTime = '2018-01-01T10:00:00.000Z';
                 scheduleTestObject.endDateTime = '2118-01-01T10:00:00.000Z';
@@ -600,6 +603,8 @@ describe('schedule', function() {
                 let calculationResult = schedule.nextOccurrence(scheduleTestObject);   
                 let nextRunDateTime = addDate(getDateTime(), 0, 0, 1);
                 nextRunDateTime.setUTCHours(12, 0, 0, 0);
+                if(getDateTime().getUTCHours() < 12)
+                    nextRunDateTime = addDate(nextRunDateTime, 0, 0, -1);                
                 logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
                 assert.equalDate(calculationResult, nextRunDateTime);
                 assert.equalTime(calculationResult, nextRunDateTime);

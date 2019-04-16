@@ -1,6 +1,6 @@
 {
   "name": "schedulator",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "repository": {
     "type": "git",
     "url": "https://github.com/uka17/schedulator.git"
@@ -14,10 +14,19 @@
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha",
     "mtest": "mocha",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "uglyfy": "uglifyjs lib/schedule.js lib/tools.js -o lib/schedulator.min.js -c -m"
   },
   "author": "Maj. Tom Johnson",
   "license": "MIT",
+  "keywords": [
+    "javascript",
+    "scheduler",
+    "json-schema-based",
+    "simple-scheduler",
+    "friendly-schema",
+    "task-scheduler"
+  ],
   "dependencies": {
     "ajv": "^6.5.2"
   },
@@ -26,7 +35,8 @@
     "chai-datetime": "^1.5.0",
     "coveralls": "^3.0.2",
     "mocha": "^5.2.0",
-    "nyc": "^12.0.2",
-    "supertest": "^3.3.0"
+    "nyc": "^14.0.0",
+    "supertest": "^3.3.0",
+    "uglify-js": "^3.5.4"
   }
 }
