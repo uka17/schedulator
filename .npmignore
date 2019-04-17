@@ -16,3 +16,5 @@ example/
 .travis.yml
 package-lock.json
 .cache
+coverage/
+.nyc_output/
