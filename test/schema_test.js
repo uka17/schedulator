@@ -159,7 +159,28 @@ describe('schema validation', function() {
                         assert.equal(DataVsSchemaResult(nDailyScheduleEvery, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), false);
                         assert.include(DataVsSchemaErrors(nDailyScheduleEvery, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), 'data.dailyFrequency.start should match format "time"');
                         done();
-                    })    
+                    })              
+                    it('incorrect "dailyFrequency.end" type', function(done) {                                            
+                        let nDailyScheduleEvery = JSON.parse(JSON.stringify(dailyScheduleEvery));
+                        nDailyScheduleEvery.dailyFrequency.end = 1;
+                        assert.equal(DataVsSchemaResult(nDailyScheduleEvery, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), false);
+                        assert.include(DataVsSchemaErrors(nDailyScheduleEvery, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), 'data.dailyFrequency.end should be string');
+                        done();
+                    })          
+                    it('incorrect "dailyFrequency.end" format (11)', function(done) {                                            
+                        let nDailyScheduleEvery = JSON.parse(JSON.stringify(dailyScheduleEvery));
+                        nDailyScheduleEvery.dailyFrequency.end = '11';
+                        assert.equal(DataVsSchemaResult(nDailyScheduleEvery, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), false);
+                        assert.include(DataVsSchemaErrors(nDailyScheduleEvery, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), 'data.dailyFrequency.end should match format "time"');
+                        done();
+                    })
+                    it('incorrect "dailyFrequency.end" format (11:11:99)', function(done) {                                            
+                        let nDailyScheduleEvery = JSON.parse(JSON.stringify(dailyScheduleEvery));
+                        nDailyScheduleEvery.dailyFrequency.end = '11:11:99';
+                        assert.equal(DataVsSchemaResult(nDailyScheduleEvery, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), false);
+                        assert.include(DataVsSchemaErrors(nDailyScheduleEvery, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), 'data.dailyFrequency.end should match format "time"');
+                        done();
+                    })                        
                     it('incorrect "dailyFrequency.occursEvery" type', function(done) {                                            
                         let nDailyScheduleEvery = JSON.parse(JSON.stringify(dailyScheduleEvery));
                         nDailyScheduleEvery.dailyFrequency.occursEvery = 1;

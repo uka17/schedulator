@@ -86,6 +86,7 @@
                 "type": "object", 
                 "properties": {
                     "start": {"type": "string", "format": "time"},
+                    "end": {"type": "string", "format": "time"},
                     "occursEvery": { 
                         "type": "object", 
                         "properties": {                         

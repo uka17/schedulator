@@ -28,7 +28,7 @@
     "task-scheduler"
   ],
   "dependencies": {
-    "ajv": "^6.5.2"
+    "ajv": "^6.10.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
