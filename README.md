@@ -136,12 +136,13 @@ console.log(schedule.nextOccurrence(scheduleTestObject));
 //2020-02-01T11:11:11.000Z
 ```
 #### every
-Event happens starting from `start` time and repeats till the end of the day accordingly to `occursEvery` condition. 
+Event happens starting from `start` time and repeats either till the end of the day or till time defined by `end` parameter accordingly to `occursEvery` condition. 
 
-- `start` - string, required. Time (format hh:mm:ss) when first occurrence should happen during this day.
+- `start` - string, required. Indicates start time (format `hh:mm:ss`) of the schedule and first occurrence in scope of the day.
+- `end` - string, required. Indicates end time (format `hh:mm:ss`) of schedule duration in scope of the day.
 - `occursEvery` - object, required. Object which defines repetitive condition for event. 
 
-> `start` attribute usually is the first occurrance of event during the day. 
+>  [nextOccurrence](#nextOccurrence(scheduleObject)) method returns `null` in case if `start` time later or equal to `end` time.
 
 Repeat condition `occursEvery` is calculated based on `intervalValue` and `intervalType` attibutes.
 

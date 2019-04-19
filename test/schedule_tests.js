@@ -346,7 +346,43 @@ describe('schedule', function() {
                 //assertion
                 assert.isNull(calculationResult);
                 done();
-            });             
+            });    
+            it('success. run every 10 hours ("end" earlier that next occurrence this day)', function(done) {
+                //test data preparation
+                let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleEveryOK));
+                scheduleTestObject.startDateTime = '2001-01-01T10:00:00.000Z';
+                scheduleTestObject.eachNDay = 1;                
+                scheduleTestObject.dailyFrequency.start = '00:00:01';
+                scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'hour';
+                scheduleTestObject.dailyFrequency.occursEvery.intervalValue = 10;
+                scheduleTestObject.dailyFrequency.end = '10:00:01';
+                //time
+                let time = scheduleTestObject.dailyFrequency.start.split(':');
+                nextRunDateTime = new Date(addDate(getDateTime(), 0, 0, 1).setUTCHours(time[0], time[1], time[2], 0));
+                //calculate test case data
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
+                logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
+                //assertion
+                assert.equalDate(calculationResult, nextRunDateTime);
+                assert.equalTime(calculationResult, nextRunDateTime);
+                done();
+            });      
+            it('failed. run every 10 hours ("end" earlier or same as "start")', function(done) {
+                //test data preparation
+                let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').dailyScheduleEveryOK));
+                scheduleTestObject.startDateTime = '2100-01-01T10:00:00.000Z';
+                scheduleTestObject.eachNDay = 1;                
+                scheduleTestObject.dailyFrequency.start = '10:00:00';
+                scheduleTestObject.dailyFrequency.occursEvery.intervalType = 'hour';
+                scheduleTestObject.dailyFrequency.occursEvery.intervalValue = 10;
+                scheduleTestObject.dailyFrequency.end = '10:00:00';
+                //calculate test case data
+                let calculationResult = schedule.nextOccurrence(scheduleTestObject);
+                logSchedule(scheduleTestObject, calculationResult, null);
+                //assertion
+                assert.isNull(calculationResult);
+                done();
+            });                                   
             //todo eachNDays>1        
         });
 
