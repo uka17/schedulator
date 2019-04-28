@@ -24,8 +24,10 @@ console.log(schedule.nextOccurrence(scheduleTestObject));
 
 ## Schedule methods
 ### nextOccurrence(scheduleObject)
-Returns UTC date and time of nearest next occurrence of `scheduleObject` in ISO format (e.g. 2019-01-01T01:00:00.000Z). Method returns `null` in case if it is not possible to calculate next occurrence or `endDateTime` of `scheduleObject` is in the past or event had `oneTime` schedule which already happened.
-> Exception with error text will be thrown in case if `scheduleObject` contains incorrect schedule schema.
+Returns object with UTC date and time of nearest next occurrence of `scheduleObject` in ISO format (e.g. 2019-01-01T01:00:00.000Z) and error messages. Object contains 2 fields:
+- `result` - date-time of next occurence or `null` in case if it is not possible to calculate next occurrence or `endDateTime` of `scheduleObject` is in the past or event had `oneTime` schedule which already happened.
+- `error` - error message in case if it is not possible to calculate next occurence and `null` in case if calculation was done succesfully
+
 ```javascript
 let schedule = require('schedulator');
 let scheduleTestObject = 
