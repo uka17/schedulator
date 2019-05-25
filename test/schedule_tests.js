@@ -53,13 +53,20 @@ function logSchedule(schedule, calculated, expected, showDebug) {
     }
 }
 describe('schedule', function() {
-    describe('valid not valid', function() {           
+    describe('common tests', function() {           
         it('valid', function(done) {                
             let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').oneTimeScheduleOK));
             scheduleTestObject.oneTime = '2119-06-10T02:02:02.071Z';
             assert.isNotNull(schedule.nextOccurrence(scheduleTestObject).result);
             done();
-        });                                                         
+        });           
+        it('disabled', function(done) {                
+            let scheduleTestObject = JSON.parse(JSON.stringify(require('./test_data').oneTimeScheduleOK));
+            scheduleTestObject.enabled = false;
+            assert.isNull(schedule.nextOccurrence(scheduleTestObject).result);
+            assert.include(schedule.nextOccurrence(scheduleTestObject).error, "disabled");
+            done();
+        });                                                       
     });    
     describe('nextOccurrence', function() {           
         describe('oneTime', function() {

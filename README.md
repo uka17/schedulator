@@ -18,7 +18,7 @@ let scheduleTestObject =
  "dailyFrequency": { "occursOnceAt": "11:30:00"}
 }
 console.log(schedule.nextOccurrence(scheduleTestObject));
-//2019-01-02T11:30:00.000Z
+//{"result": 2019-01-02T11:30:00.000Z, "error": null}
 ```
 > All examples here and later calculated based on fact that current date time is `2018-12-31T10:00:00.000Z`
 
@@ -35,12 +35,25 @@ let scheduleTestObject =
  "oneTime": "2019-01-01T01:00:00.000Z"
 }
 console.log(schedule.nextOccurrence(scheduleTestObject));
-//2019-01-01T01:00:00.000Z
+//{"result": 2019-01-01T01:00:00.000Z, "error": null}
 ```
 ## Schedule object
-Schedule object describes scheduling rule in JSON format and can be presented by `oneTime`, `daily`, `weekly` or `monthly` entry.
+Schedule object describes scheduling rule in JSON format and can be presented by `oneTime`, `daily`, `weekly` or `monthly` entry. Additionally schedule object contain `enabled` property which is not mandatory.
 
-> All schemas will be validated during run of `nextOccurrence` method. Exception with error will be thrown in case of any schema mismatch.  
+> All schemas will be validated before run of `nextOccurrence` method. Exception with error will be thrown in case of any schema mismatch.  
+
+### enabled
+Next run can be calculate only in case if `enabled` is `true`, otherwise error will be returned.
+
+```javascript
+let scheduleTestObject = 
+{ 
+ "enabled": false,
+ "oneTime": "2019-01-01T01:00:00.000Z"
+}
+console.log(schedule.nextOccurrence(scheduleTestObject));
+//{"result": null, error: "schedule is disabled"}
+```
 
 ### oneTime
 Event happens only once and is not going to be repeated.
@@ -53,7 +66,7 @@ let scheduleTestObject =
  "oneTime": "2019-01-01T01:00:00.000Z"
 }
 console.log(schedule.nextOccurrence(scheduleTestObject));
-//2019-01-01T01:00:00.000Z
+//{"result": 2019-01-01T01:00:00.000Z, "error": null}
 ```
 ### daily
 Event happens ones per `n` day(s) according to [dailyFrequency](#dailyFrequency) field value.
@@ -72,7 +85,7 @@ let scheduleTestObject =
  "dailyFrequency": { "occursOnceAt": "11:11:11"}
 }
 console.log(schedule.nextOccurrence(scheduleTestObject));
-//2020-02-02T11:11:11.000Z
+//{"result": 2020-02-02T11:11:11.000Z, "error": null}
 ```
 ### weekly
 Event happens ones per `n` week(s) according to [dailyFrequency](#dailyFrequency) field value.
@@ -95,7 +108,7 @@ let scheduleTestObject = {
  "dailyFrequency": { "occursOnceAt": "11:11:11"}
 }	
 console.log(schedule.nextOccurrence(scheduleTestObject));
-//2020-01-13T11:11:11.000Z
+//{"result": 2020-01-13T11:11:11.000Z, "error": null}
 ```
 ### monthly
 Event happens ones per each month mentioned and according to [dailyFrequency](#dailyFrequency) field value.
@@ -117,7 +130,7 @@ let scheduleTestObject = {
  "dailyFrequency": { "occursOnceAt": "11:11:11"}
 }
 console.log(schedule.nextOccurrence(scheduleTestObject));
-//2020-07-01T11:11:11.000Z
+//{"result": 2020-07-01T11:11:11.000Z, "error": null}
 ```
 ### dailyFrequency
 Daily, weekly and monthly schedule contains `dailyFrequency` attribute which defines occurrence of event in scope of the day. Can be either `once` (happens only once per day) or `every` (happens several times per day based on the clause).
@@ -135,7 +148,7 @@ let scheduleTestObject =
  "dailyFrequency": { "occursOnceAt": "11:11:11"}
 }
 console.log(schedule.nextOccurrence(scheduleTestObject));
-//2020-02-01T11:11:11.000Z
+//{"result": 2020-02-01T11:11:11.000Z, "error": null}
 ```
 #### every
 Event happens starting from `start` time and repeats either till the end of the day or till time defined by `end` parameter accordingly to `occursEvery` condition. 
@@ -167,5 +180,5 @@ let scheduleTestObject =
 }
 //Considering script runs at 2018-12-31T10:00:00.000Z...
 console.log(schedule.nextOccurrence(scheduleTestObject));
-//2018-12-31T10:30:00.000Z
+//{"result": 2018-12-31T10:30:00.000Z, "error": null}
 ```

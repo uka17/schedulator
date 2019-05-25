@@ -12,7 +12,26 @@ let weeklySchedule = testData.weeklyScheduleOK;
 let monthlySchedule = testData.monthlyScheduleOK;
 //---
 describe('schema validation', function() {
-    describe('schedule', function() {
+    describe('schedule', function() {        
+        describe('enabled', function() {
+            it('initial validation. OK', function(done) {        
+                let nOneTimeSchedule = JSON.parse(JSON.stringify(oneTimeSchedule));
+                assert.equal(DataVsSchemaResult(nOneTimeSchedule, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), true);
+                done();
+            })
+            it('incorrect "enabled" type', function(done) {                                            
+                let nOneTimeSchedule = JSON.parse(JSON.stringify(oneTimeSchedule));
+                nOneTimeSchedule.enabled = "aaa";
+                assert.equal(DataVsSchemaResult(nOneTimeSchedule, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), false);
+                assert.include(DataVsSchemaErrors(nOneTimeSchedule, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), 'data.enabled should be boolean');
+                done();
+            })                  
+            it('no "enabled" field', function(done) {                            
+                let nDailyScheduleOnce = JSON.parse(JSON.stringify(dailyScheduleOnce));
+                assert.equal(DataVsSchemaResult(nDailyScheduleOnce, scheduleModel.scheduleSchema, [scheduleModel.scheduleSchemaDaily]), true);
+                done();
+            })                                            
+        });        
         describe('oneTime', function() {
             it('initial validation. OK', function(done) {        
                 let nOneTimeSchedule = JSON.parse(JSON.stringify(oneTimeSchedule));
