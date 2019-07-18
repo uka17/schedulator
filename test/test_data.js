@@ -1,31 +1,31 @@
 //schedule test data preparation
 module.exports.oneTimeScheduleOK = {
-    enabled: true,
-    oneTime: '2018-01-31T20:54:23.071Z'
+  enabled: true,
+  oneTime: '2018-01-31T20:54:23.071Z'
 };
 module.exports.dailyScheduleOnceOK = {
-    startDateTime: '2018-01-31T20:54:23.071Z',
-    eachNDay: 1,
-    dailyFrequency: { occursOnceAt: '11:11:11'}
+  startDateTime: '2018-01-31T20:54:23.071Z',
+  eachNDay: 1,
+  dailyFrequency: { occursOnceAt: '11:11:11'}
 };
 module.exports.dailyScheduleEveryOK = {
-    enabled: true,
-    startDateTime: '2018-01-31T20:54:23.071Z',
-    eachNDay: 1,
-    dailyFrequency: { start: '11:11:11', occursEvery: {intervalValue: 1, intervalType: 'minute'}}
+  enabled: true,
+  startDateTime: '2018-01-31T20:54:23.071Z',
+  eachNDay: 1,
+  dailyFrequency: { start: '11:11:11', occursEvery: {intervalValue: 1, intervalType: 'minute'}}
 };
 module.exports.weeklyScheduleOK = {
-    startDateTime: '2018-01-31T20:54:23.071Z',
-    eachNWeek: 1,
-    dayOfWeek: ['mon', 'wed', 'fri'],
-    dailyFrequency: { occursOnceAt: '11:11:11'}
+  startDateTime: '2018-01-31T20:54:23.071Z',
+  eachNWeek: 1,
+  dayOfWeek: ['mon', 'wed', 'fri'],
+  dailyFrequency: { occursOnceAt: '11:11:11'}
 };
 module.exports.monthlyScheduleOK = {
-    enabled: true,
-    startDateTime: '2018-01-31T20:54:23.071Z',
-    month: ['jan', 'jul'],
-    day: [11, 2, 8, 1],
-    dailyFrequency: { start: '11:11:11', occursEvery: {intervalValue: 1, intervalType: 'minute'}}
+  enabled: true,
+  startDateTime: '2018-01-31T20:54:23.071Z',
+  month: ['jan', 'jul'],
+  day: [11, 2, 8, 1],
+  dailyFrequency: { start: '11:11:11', occursEvery: {intervalValue: 1, intervalType: 'minute'}}
 };
 //utils validation test data
 module.exports.validTime = '11:11:11';
