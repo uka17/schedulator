@@ -1,6 +1,6 @@
 {
   "name": "schedulator",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "repository": {
     "type": "git",
     "url": "https://github.com/uka17/schedulator.git"
@@ -34,9 +34,11 @@
     "chai": "^4.1.2",
     "chai-datetime": "^1.5.0",
     "coveralls": "^3.0.2",
+    "gulp": "^4.0.2",
+    "gulp-browserify": "^0.5.1",
+    "gulp-minify": "^3.1.0",
     "mocha": "^5.2.0",
     "nyc": "^14.0.0",
-    "parcel-bundler": "^1.12.3",
     "supertest": "^3.3.0"
   }
 }
