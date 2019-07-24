@@ -23,7 +23,10 @@ Simple schedule handling tool. Allows to create JSON schedule scheme and calcula
       - [every](#every)
 
 ## Installation
+Node
 `~$ npm install schedulator`
+Web
+`<script src="schedulator-min.js"></script>`
 ## Shut up and show me how to use it
 Node
 ```javascript
@@ -47,13 +50,13 @@ Web
 </head>
 <body>
 <script>
-    var scheduleTestObject = 
-    {
-	"startDateTime": "2019-01-01T01:00:00.000Z",
-	"eachNWeek": 1,
-	"dayOfWeek": ['mon', 'wed', 'fri'],
-	"dailyFrequency": { "occursOnceAt": "11:30:00"}
-	}
+  var scheduleTestObject = 
+  {
+  "startDateTime": "2019-01-01T01:00:00.000Z",
+  "eachNWeek": 1,
+  "dayOfWeek": ['mon', 'wed', 'fri'],
+  "dailyFrequency": { "occursOnceAt": "11:30:00"}
+  }
 	alert('Next occurrence: ' + schedule.nextOccurrence(scheduleTestObject).result);
 	//{"result": 2019-01-02T11:30:00.000Z, "error": null}
 </script>
