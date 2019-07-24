@@ -66,8 +66,11 @@ Web
 
 ## Schedule methods
 ### nextOccurrence(scheduleObject)
-Returns object with UTC date and time of nearest next occurrence of `scheduleObject` in ISO format (e.g. 2019-01-01T01:00:00.000Z) and error messages. Object contains 2 fields:
-- `result` - date-time of next occurence or `null` in case if it is not possible to calculate next occurrence or `endDateTime` of `scheduleObject` is in the past or event had `oneTime` schedule which already happened.
+Returns object with UTC date and time of nearest next occurrence of `scheduleObject` in ISO format (e.g. 2019-01-01T01:00:00.000Z) and error messages if value can not be calculated. Object contains 2 fields:
+- `result` - date-time of next occurence or `null` in case of one of next clauses: 
+  * it is not possible to calculate next occurrence 
+  * `endDateTime` of `scheduleObject` is in the past 
+  * event had `oneTime` schedule which already happened
 - `error` - error message in case if it is not possible to calculate next occurence and `null` in case if calculation was done succesfully
 
 ```javascript
