@@ -56,8 +56,8 @@ Web
   "dayOfWeek": ['mon', 'wed', 'fri'],
   "dailyFrequency": { "occursOnceAt": "11:30:00"}
   }
-	alert('Next occurrence: ' + schedule.nextOccurrence(scheduleTestObject).result);
-	//{"result": 2019-01-02T11:30:00.000Z, "error": null}
+  alert('Next occurrence: ' + schedule.nextOccurrence(scheduleTestObject).result);
+  //{"result": 2019-01-02T11:30:00.000Z, "error": null}
 </script>
 </body>
 </html> 
