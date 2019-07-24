@@ -6,21 +6,20 @@
 
 Simple schedule handling tool. Allows to create JSON schedule scheme and calculate next run based on it. Scheme has clear, readable and people-friendly format.
 
-##Table of content
-- [schedulator](#schedulator)
-  * [Installation](#installation)
-  * [Shut up and show me how to use it](#shut-up-and-show-me-how-to-use-it)
-  * [Schedule methods](#schedule-methods)
-    + [nextOccurrence(scheduleObject)](#nextoccurrence-scheduleobject-)
-  * [Schedule object](#schedule-object)
-    + [enabled](#enabled)
-    + [oneTime](#onetime)
-    + [daily](#daily)
-    + [weekly](#weekly)
-    + [monthly](#monthly)
-    + [dailyFrequency](#dailyfrequency)
-      - [once](#once)
-      - [every](#every)
+## Table of content
+- [Installation](#installation)
+- [Shut up and show me how to use it](#shut-up-and-show-me-how-to-use-it)
+- [Schedule methods](#schedule-methods)
+  * [nextOccurrence(scheduleObject)](#nextoccurrence-scheduleobject-)
+- [Schedule object](#schedule-object)
+  * [enabled](#enabled)
+  * [oneTime](#onetime)
+  * [daily](#daily)
+  * [weekly](#weekly)
+  * [monthly](#monthly)
+  * [dailyFrequency](#dailyfrequency)
+    + [once](#once)
+    + [every](#every)
 
 ## Installation
 Node
