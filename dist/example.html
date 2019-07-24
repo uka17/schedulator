@@ -4,7 +4,6 @@
     <script src="schedulator-min.js"></script>
 </head>
 <body>
-<div id="example">Error!</div>
 <script>
     var scheduleTestObject = 
     { 
@@ -19,7 +18,7 @@
             }
         }
     };
-    document.getElementById("example").innerHTML = 'Next occurrence: <b>' + schedule.nextOccurrence(scheduleTestObject).result + '</b>';
+    alert('Next occurrence: ' + schedule.nextOccurrence(scheduleTestObject).result);
 </script>
 </body>
 </html> 

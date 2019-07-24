@@ -5,9 +5,27 @@
 [![Coverage Status](https://coveralls.io/repos/github/uka17/schedulator/badge.svg?)](https://coveralls.io/github/uka17/schedulator)
 
 Simple schedule handling tool. Allows to create JSON schedule scheme and calculate next run based on it. Scheme has clear, readable and people-friendly format.
+
+##Table of content
+- [schedulator](#schedulator)
+  * [Installation](#installation)
+  * [Shut up and show me how to use it](#shut-up-and-show-me-how-to-use-it)
+  * [Schedule methods](#schedule-methods)
+    + [nextOccurrence(scheduleObject)](#nextoccurrence-scheduleobject-)
+  * [Schedule object](#schedule-object)
+    + [enabled](#enabled)
+    + [oneTime](#onetime)
+    + [daily](#daily)
+    + [weekly](#weekly)
+    + [monthly](#monthly)
+    + [dailyFrequency](#dailyfrequency)
+      - [once](#once)
+      - [every](#every)
+
 ## Installation
 `~$ npm install schedulator`
 ## Shut up and show me how to use it
+Node
 ```javascript
 let schedule = require('schedulator');
 let scheduleTestObject = 
@@ -19,6 +37,28 @@ let scheduleTestObject =
 }
 console.log(schedule.nextOccurrence(scheduleTestObject));
 //{"result": 2019-01-02T11:30:00.000Z, "error": null}
+```
+Web
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="schedulator-min.js"></script>
+</head>
+<body>
+<script>
+    var scheduleTestObject = 
+    {
+	"startDateTime": "2019-01-01T01:00:00.000Z",
+	"eachNWeek": 1,
+	"dayOfWeek": ['mon', 'wed', 'fri'],
+	"dailyFrequency": { "occursOnceAt": "11:30:00"}
+	}
+	alert('Next occurrence: ' + schedule.nextOccurrence(scheduleTestObject).result);
+	//{"result": 2019-01-02T11:30:00.000Z, "error": null}
+</script>
+</body>
+</html> 
 ```
 > All examples here and later calculated based on fact that current date time is `2018-12-31T10:00:00.000Z`
 
