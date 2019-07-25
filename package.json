@@ -14,8 +14,7 @@
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha",
     "mtest": "mocha",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "build": "parcel build lib/schedule.js --public-url ./ --out-file schedulator.min.js"
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Maj. Tom Johnson",
   "license": "MIT",
