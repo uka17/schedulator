@@ -113,11 +113,11 @@ describe("schedule", function() {
       });      
       it("success. occurrs and start date in far future", function(done) {
         let scheduleTestObject = JSON.parse(JSON.stringify(require("./test_data").dailyScheduleOnceOK));
-        scheduleTestObject.startDateTime = "2020-01-31T20:54:23.071Z";
-        scheduleTestObject.endDateTime = "2021-01-31T20:54:23.071Z";
+        scheduleTestObject.startDateTime = "2030-01-31T20:54:23.071Z";
+        scheduleTestObject.endDateTime = "2031-01-31T20:54:23.071Z";
         scheduleTestObject.eachNDay = 2;
         scheduleTestObject.dailyFrequency.occursOnceAt = "11:11:11";
-        let nextRunDateTime = parseDateTime("2020-02-02T11:11:11.000Z");
+        let nextRunDateTime = parseDateTime("2030-02-02T11:11:11.000Z");
         let calculationResult = schedule.nextOccurrence(scheduleTestObject).result;
         logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);        
         assert.equalDate(calculationResult, nextRunDateTime);
@@ -414,13 +414,13 @@ describe("schedule", function() {
       });        
       it("success. run every 1st week (future), reverse week day order", function(done) {               
         let scheduleTestObject = JSON.parse(JSON.stringify(require("./test_data").weeklyScheduleOK));
-        scheduleTestObject.startDateTime = "2020-01-01T00:00:01.000Z";
-        scheduleTestObject.endDateTime = "2020-12-31T23:59:59.000Z";
+        scheduleTestObject.startDateTime = "2030-01-01T00:00:01.000Z";
+        scheduleTestObject.endDateTime = "2030-12-31T23:59:59.000Z";
         scheduleTestObject.eachNWeek = 3;
         scheduleTestObject.dayOfWeek = ["wed", "fri", "mon"];
         scheduleTestObject.dailyFrequency.occursOnceAt = "11:11:11";
         let calculationResult = schedule.nextOccurrence(scheduleTestObject).result;                   
-        let nextRunDateTime = parseDateTime("2020-01-13T11:11:11.000Z");
+        let nextRunDateTime = parseDateTime("2030-01-14T11:11:11.000Z");
         logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
         assert.equalDate(calculationResult, nextRunDateTime);
         assert.equalTime(calculationResult, nextRunDateTime);
@@ -561,7 +561,7 @@ describe("schedule", function() {
         scheduleTestObject.day = [1];
         scheduleTestObject.dailyFrequency = { "occursOnceAt": "00:00:00" };                
         let calculationResult = schedule.nextOccurrence(scheduleTestObject).result;   
-        let nextRunDateTime = parseDateTime("2020-01-01T00:00:00.000Z");
+        let nextRunDateTime = parseDateTime(`${(new Date).getFullYear() + 1}-01-01T00:00:00.000Z`);
         logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
         assert.equalDate(calculationResult, nextRunDateTime);
         assert.equalTime(calculationResult, nextRunDateTime);
@@ -574,7 +574,7 @@ describe("schedule", function() {
         scheduleTestObject.day = [15, 17, 19];
         scheduleTestObject.dailyFrequency = { "occursOnceAt": "07:00:00" };                
         let calculationResult = schedule.nextOccurrence(scheduleTestObject).result;   
-        let nextRunDateTime = parseDateTime("2019-10-15T07:00:00.000Z");
+        let nextRunDateTime = parseDateTime("2020-10-15T07:00:00.000Z");
         logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
         assert.equalDate(calculationResult, nextRunDateTime);
         assert.equalTime(calculationResult, nextRunDateTime);
