@@ -11,6 +11,7 @@
             "oneTime": {
                 "type": "object",
                 "properties": {
+                    "name": {"type": "string"},
                     "enabled": {"type": "boolean"},
                     "oneTime": {"type": "string", "format": "date-time"}
                 },
@@ -20,6 +21,7 @@
             "daily": {
                 "type": "object",
                 "properties": {
+                    "name": {"type": "string"},
                     "enabled": {"type": "boolean"},
                     "startDateTime": {"type": "string", "format": "date-time"},
                     "endDateTime": {"type": "string", "format": "date-time"},
@@ -32,6 +34,7 @@
             "weekly": {
                 "type": "object",
                 "properties": {
+                    "name": {"type": "string"},
                     "enabled": {"type": "boolean"},
                     "startDateTime": {"type": "string", "format": "date-time"},
                     "endDateTime": {"type": "string", "format": "date-time"},
@@ -50,6 +53,7 @@
             "monthly": {
                 "type": "object",
                 "properties": {
+                    "name": {"type": "string"},
                     "enabled": {"type": "boolean"},
                     "startDateTime": {"type": "string", "format": "date-time"},
                     "endDateTime": {"type": "string", "format": "date-time"},
