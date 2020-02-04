@@ -115,7 +115,7 @@ console.log(schedule.nextOccurrence(scheduleTestObject));
 //{ result: null, error: 'schema is incorrect: data.oneTime should be string, data should NOT have additional properties, data should NOT have additional properties, data should NOT have additional properties, data should match exactly one schema in oneOf' }
 ```
 ### enabled (optional)
-Next run can be calculate only in case if `enabled` is `true`, otherwise error will be returned. Property is being considered as `true` in case if it is not presented in schedule object.
+Next run can be calculate only in case if `enabled` is `true`, otherwise error will be returned. 
 
 ```javascript
 let schedule = require('schedulator');
@@ -126,6 +126,17 @@ let scheduleTestObject =
 }
 console.log(schedule.nextOccurrence(scheduleTestObject));
 //{"result": null, error: "schedule is disabled"}
+```
+Property is being considered as `true` in case if it is not presented in schedule object.
+
+```javascript
+let schedule = require('schedulator');
+let scheduleTestObject = 
+{ 
+ "oneTime": "2019-01-01T01:00:00.000Z"
+}
+console.log(schedule.nextOccurrence(scheduleTestObject));
+//{"result": 2019-01-01T01:00:00.000Z, "error": null}
 ```
 
 ### oneTime
