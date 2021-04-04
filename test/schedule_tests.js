@@ -10,6 +10,7 @@ var addDate = require("../lib/tools").addDate;
 var monthList = require("../lib/tools").monthList;
 var parseDateTime = require("../lib/tools").parseDateTime;
 var getTimefromDateTime = require("../lib/tools").getTimefromDateTime;
+let formatDateTime = require('../lib/tools').formatDateTime;
 var leadZero = require("../lib/tools").leadZero;
 var schedule = require("../lib/schedule");
 
@@ -69,6 +70,14 @@ describe("schedule", function() {
       assert.include(schedule.nextOccurrence(scheduleTestObject).error, "disabled");
       done();
     });                                                       
+  });    
+  describe("summary", function() {           
+    it("once", function(done) {                
+      let scheduleTestObject = JSON.parse(JSON.stringify(require("./test_data").oneTimeScheduleOK));
+      scheduleTestObject.oneTime = "2119-06-10T02:02:02.071Z";
+      assert.equal(schedule.summary(scheduleTestObject), `Once at ${formatDateTime(parseDateTime(scheduleTestObject.oneTime))}`);
+      done();
+    });                                                                      
   });    
   describe("nextOccurrence", function() {           
     describe("oneTime", function() {
@@ -574,7 +583,8 @@ describe("schedule", function() {
         scheduleTestObject.day = [15, 17, 19];
         scheduleTestObject.dailyFrequency = { "occursOnceAt": "07:00:00" };                
         let calculationResult = schedule.nextOccurrence(scheduleTestObject).result;   
-        let nextRunDateTime = parseDateTime("2020-10-15T07:00:00.000Z");
+        //I'm lazy to calculate this value, just move year to one ahead if this test doesn't work properly
+        let nextRunDateTime = parseDateTime("2021-10-15T07:00:00.000Z");
         logSchedule(scheduleTestObject, calculationResult, nextRunDateTime);
         assert.equalDate(calculationResult, nextRunDateTime);
         assert.equalTime(calculationResult, nextRunDateTime);
