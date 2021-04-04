@@ -9,7 +9,8 @@ Simple schedule handling tool. Allows to create JSON schedule scheme and calcula
 ## Table of content
   - [Installation](#installation)
   - [Shut up and show me how to use it](#shut-up-and-show-me-how-to-use-it)
-  - [Schedule methods](#schedule-methods)
+  - [Schedulator methods](#schedulator-methods)
+    - [summary(scheduleObject)](#summaryscheduleobject)
     - [nextOccurrence(scheduleObject)](#nextoccurrencescheduleobject)
   - [Schedule object](#schedule-object)
     - [enabled (optional)](#enabled-optional)
@@ -67,7 +68,35 @@ Web
 ```
 > All examples here and later calculated based on fact that current date time is `2018-12-31T10:00:00.000Z`
 
-## Schedule methods
+## Schedulator methods
+### summary(scheduleObject)
+Returns string human readable representation of schedule object
+```javascript
+let schedulator = require('schedulator');
+let scheduleTestObject = 
+{
+ "oneTime": "2019-01-01T01:00:00.000Z"
+}
+console.log(schedulator.summary(scheduleTestObject));
+//Once at 1/1/2019, 4:00:00 AM
+
+let scheduleOutdatedTestObject = 
+{ 
+	"startDateTime": "2018-12-31T01:00:00.000Z",
+	"endDateTime": "2001-12-31T01:00:00.000Z",
+    "month": ["dec", "jul"],
+    "day": [29, 30, 31],
+    "dailyFrequency": { 
+		"start": "09:00:00", 
+		"occursEvery": {
+			"intervalValue": 90, 
+			"intervalType": "minute"
+		}
+	}
+}
+console.log(schedulator.summary(scheduleOutdatedTestObject));
+//In December and July each 29, 30 and 31 day, every 90 minute(s) between 09:00:00 and 23:59:59, starting 12/31/2018, 4:00:00 AM and till 12/31/2001, 4:00:00 AM
+```
 ### nextOccurrence(scheduleObject)
 Returns object with UTC date and time of nearest next occurrence of `scheduleObject` in ISO format (e.g. 2019-01-31T13:00:00.000Z) and error messages if value can not be calculated. Object contains 2 fields:
 - `result` - date-time of next occurence or `null` in case of one of next clauses: 
