@@ -77,7 +77,28 @@ describe("schedule", function() {
       scheduleTestObject.oneTime = "2119-06-10T02:02:02.071Z";
       assert.equal(schedule.summary(scheduleTestObject), `Once at ${formatDateTime(parseDateTime(scheduleTestObject.oneTime))}`);
       done();
-    });                                                                      
+    });        
+    it("eachNDay", function(done) {                
+      let scheduleTestObject = JSON.parse(JSON.stringify(require("./test_data").dailyScheduleEveryOK));
+      scheduleTestObject.eachNDay = 3;
+      scheduleTestObject.startDateTime = '2018-01-31T20:54:23.071Z';
+      scheduleTestObject.endDateTime = '2019-01-31T20:54:23.071Z';
+      const correct = `Each 3 day(s), every 1 minute(s) between 11:11:11 and 23:59:59, starting ${formatDateTime(parseDateTime(scheduleTestObject.startDateTime))} and till ${formatDateTime(parseDateTime(scheduleTestObject.endDateTime))}`;
+      assert.equal(schedule.summary(scheduleTestObject), correct);
+      done();
+    });                                                                   
+    it("eachNWeek", function(done) {                
+      let scheduleTestObject = JSON.parse(JSON.stringify(require("./test_data").weeklyScheduleOK));
+      const correct = `Each 1 week(s) on Monday, Wednesday and Friday, at 11:11:11, starting ${formatDateTime(parseDateTime(scheduleTestObject.startDateTime))}`;
+      assert.equal(schedule.summary(scheduleTestObject), correct);
+      done();
+    });
+    it("month", function(done) {                
+      let scheduleTestObject = JSON.parse(JSON.stringify(require("./test_data").monthlyScheduleOK));
+      const correct = `In January and July each 11, 2, 8 and 1 day, every 1 minute(s) between 11:11:11 and 23:59:59, starting ${formatDateTime(parseDateTime(scheduleTestObject.startDateTime))}`;
+      assert.equal(schedule.summary(scheduleTestObject), correct);
+      done();
+    });                                                                         
   });    
   describe("nextOccurrence", function() {           
     describe("oneTime", function() {

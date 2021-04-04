@@ -7,30 +7,32 @@
 Simple schedule handling tool. Allows to create JSON schedule scheme and calculate next run based on it. Scheme has clear, readable and human-friendly format.
 
 ## Table of content
-- [Installation](#installation)
-- [Shut up and show me how to use it](#shut-up-and-show-me-how-to-use-it)
-- [Schedule methods](#schedule-methods)
-  * [nextOccurrence(scheduleObject)](#nextoccurrence-scheduleobject-)
-- [Schedule object](#schedule-object)
-  * [enabled](#enabled)
-  * [oneTime](#onetime)
-  * [daily](#daily)
-  * [weekly](#weekly)
-  * [monthly](#monthly)
-  * [dailyFrequency](#dailyfrequency)
-    + [once](#once)
-    + [every](#every)
+  - [Installation](#installation)
+  - [Shut up and show me how to use it](#shut-up-and-show-me-how-to-use-it)
+  - [Schedule methods](#schedule-methods)
+    - [nextOccurrence(scheduleObject)](#nextoccurrencescheduleobject)
+  - [Schedule object](#schedule-object)
+    - [enabled (optional)](#enabled-optional)
+    - [oneTime](#onetime)
+    - [daily](#daily)
+    - [weekly](#weekly)
+    - [monthly](#monthly)
+    - [dailyFrequency](#dailyfrequency)
+      - [once](#once)
+      - [every](#every)
 
 ## Installation
 Node
+
 `~$ npm install schedulator`
 
 Web
+
 `<script src="schedulator-min.js"></script>`
 ## Shut up and show me how to use it
 Node
 ```javascript
-let schedule = require('schedulator');
+let schedulator = require('schedulator');
 let scheduleTestObject = 
 {
   "startDateTime": "2019-01-01T01:00:00.000Z",
@@ -38,7 +40,7 @@ let scheduleTestObject =
   "dayOfWeek": ['mon', 'wed', 'fri'],
   "dailyFrequency": { "occursOnceAt": "11:30:00"}
 }
-console.log(schedule.nextOccurrence(scheduleTestObject));
+console.log(schedulator.nextOccurrence(scheduleTestObject));
 //{"result": 2019-01-02T11:30:00.000Z, "error": null}
 ```
 Web
@@ -57,7 +59,7 @@ Web
   "dayOfWeek": ['mon', 'wed', 'fri'],
   "dailyFrequency": { "occursOnceAt": "11:30:00"}
   }
-  alert('Next occurrence: ' + schedule.nextOccurrence(scheduleTestObject).result);
+  alert('Next occurrence: ' + schedulator.nextOccurrence(scheduleTestObject).result);
   //{"result": 2019-01-02T11:30:00.000Z, "error": null}
 </script>
 </body>
@@ -75,12 +77,12 @@ Returns object with UTC date and time of nearest next occurrence of `scheduleObj
 - `error` - error message in case if it is not possible to calculate next occurence and `null` in case if calculation was done succesfully
 
 ```javascript
-let schedule = require('schedulator');
+let schedulator = require('schedulator');
 let scheduleTestObject = 
 {
  "oneTime": "2019-01-01T01:00:00.000Z"
 }
-console.log(schedule.nextOccurrence(scheduleTestObject));
+console.log(schedulator.nextOccurrence(scheduleTestObject));
 //{"result": 2019-01-01T01:00:00.000Z, "error": null}
 
 let scheduleOutdatedTestObject = 
@@ -97,7 +99,7 @@ let scheduleOutdatedTestObject =
 		}
 	}
 }
-console.log(schedule.nextOccurrence(scheduleOutdatedTestObject));
+console.log(schedulator.nextOccurrence(scheduleOutdatedTestObject));
 //{ result: null, error: 'calculated date-time earlier than endDateTime' }
 ```
 ## Schedule object
@@ -106,36 +108,36 @@ Schedule object describes scheduling rule in JSON format and can be presented by
 > All schemas will be validated before run of `nextOccurrence` method. Error will be returned in `result.error` in case of any schema mismatch.  
 
 ```javascript
-let schedule = require('schedulator');
+let schedulator = require('schedulator');
 let scheduleTestObject = 
 {
   "oneTime": 1
 }
-console.log(schedule.nextOccurrence(scheduleTestObject));
+console.log(schedulator.nextOccurrence(scheduleTestObject));
 //{ result: null, error: 'schema is incorrect: data.oneTime should be string, data should NOT have additional properties, data should NOT have additional properties, data should NOT have additional properties, data should match exactly one schema in oneOf' }
 ```
 ### enabled (optional)
 Next run can be calculate only in case if `enabled` is `true`, otherwise error will be returned. 
 
 ```javascript
-let schedule = require('schedulator');
+let schedulator = require('schedulator');
 let scheduleTestObject = 
 { 
  "enabled": false,
  "oneTime": "2019-01-01T01:00:00.000Z"
 }
-console.log(schedule.nextOccurrence(scheduleTestObject));
+console.log(schedulator.nextOccurrence(scheduleTestObject));
 //{"result": null, error: "schedule is disabled"}
 ```
 Property is being considered as `true` in case if it is not presented in schedule object.
 
 ```javascript
-let schedule = require('schedulator');
+let schedulator = require('schedulator');
 let scheduleTestObject = 
 { 
  "oneTime": "2019-01-01T01:00:00.000Z"
 }
-console.log(schedule.nextOccurrence(scheduleTestObject));
+console.log(schedulator.nextOccurrence(scheduleTestObject));
 //{"result": 2019-01-01T01:00:00.000Z, "error": null}
 ```
 
@@ -145,12 +147,12 @@ Event happens only once and is not going to be repeated.
  - `oneTime` - string, UTC date and time of event in ISO format (e.g. 2019-01-31T13:00:00.000Z).
 
 ```javascript
-let schedule = require('schedulator');
+let schedulator = require('schedulator');
 let scheduleTestObject = 
 { 
  "oneTime": "2019-01-01T01:00:00.000Z"
 }
-console.log(schedule.nextOccurrence(scheduleTestObject));
+console.log(schedulator.nextOccurrence(scheduleTestObject));
 //{"result": 2019-01-01T01:00:00.000Z, "error": null}
 ```
 ### daily
@@ -162,7 +164,7 @@ Event happens ones per `n` day(s) according to [dailyFrequency](#dailyFrequency)
 - `dailyFrequency` - object, required. Defines occurrence of event in scope of the day (qv [dailyFrequency](#dailyFrequency)).
 
 ```javascript
-let schedule = require('schedulator');
+let schedulator = require('schedulator');
 let scheduleTestObject = 
 { 
  "startDateTime": "2020-01-31T20:54:23.071Z",
@@ -170,7 +172,7 @@ let scheduleTestObject =
  "eachNDay": 2,
  "dailyFrequency": { "occursOnceAt": "11:11:11"}
 }
-console.log(schedule.nextOccurrence(scheduleTestObject));
+console.log(schedulator.nextOccurrence(scheduleTestObject));
 //{"result": 2020-02-02T11:11:11.000Z, "error": null}
 ```
 ### weekly
@@ -186,7 +188,7 @@ Event happens ones per `n` week(s) according to [dailyFrequency](#dailyFrequency
 > Array `dayOfWeek` can have any order. For example, both `["sun", "mon", "tue"]` and `["tue", "sun", "mon"]` variants are valid.
 
 ```javascript
-let schedule = require('schedulator');
+let schedulator = require('schedulator');
 let scheduleTestObject = {
  "startDateTime": "2020-01-01T00:00:01.000Z",
  "endDateTime": "2020-12-31T23:59:59.000Z",
@@ -194,7 +196,7 @@ let scheduleTestObject = {
  "dayOfWeek": ['mon', 'wed', 'fri'],
  "dailyFrequency": { "occursOnceAt": "11:11:11"}
 }	
-console.log(schedule.nextOccurrence(scheduleTestObject));
+console.log(schedulator.nextOccurrence(scheduleTestObject));
 //{"result": 2020-01-13T11:11:11.000Z, "error": null}
 ```
 ### monthly
@@ -209,7 +211,7 @@ Event happens ones per each month mentioned and according to [dailyFrequency](#d
 > Arrays `month` and `day` can have any order. For example, all variants `["jul", "sep", "may"]` and `["may", "jul", "sep"]`, `[1, 2, 3]` and `[3, 2, 1]` are valid.
 
 ```javascript
-let schedule = require('schedulator');
+let schedulator = require('schedulator');
 let scheduleTestObject = {
  "startDateTime": "2020-01-01T00:00:01.000Z",
  "endDateTime": "2020-12-31T23:59:59.000Z",
@@ -217,7 +219,7 @@ let scheduleTestObject = {
  "day": [11, 2, 8, 1],
  "dailyFrequency": { "occursOnceAt": "11:11:11"}
 }
-console.log(schedule.nextOccurrence(scheduleTestObject));
+console.log(schedulator.nextOccurrence(scheduleTestObject));
 //{"result": 2020-07-01T11:11:11.000Z, "error": null}
 ```
 ### dailyFrequency
@@ -229,14 +231,14 @@ Happens only once per day at proper time.
 - `occursOnceAt` - string, requiered. Time (format hh:mm:ss) when event should be triggered.
 
 ```javascript
-let schedule = require('schedulator');
+let schedulator = require('schedulator');
 let scheduleTestObject = 
 { 
  "startDateTime": "2020-01-31T20:54:23.071Z",
  "eachNDay": 1,
  "dailyFrequency": { "occursOnceAt": "11:11:11"}
 }
-console.log(schedule.nextOccurrence(scheduleTestObject));
+console.log(schedulator.nextOccurrence(scheduleTestObject));
 //{"result": 2020-02-01T11:11:11.000Z, "error": null}
 ```
 #### every
@@ -254,7 +256,7 @@ Repeat condition `occursEvery` is calculated based on `intervalValue` and `inter
 - `intervalType` - string, required. Defines type of interval. Reference: `["minute", "hour"]`
 
 ```javascript
-let schedule = require('schedulator');
+let schedulator = require('schedulator');
 let scheduleTestObject = 
 { 
 	"startDateTime": "2018-12-31T01:00:00.000Z",
@@ -269,6 +271,6 @@ let scheduleTestObject =
 	}
 }
 //Considering script runs at 2018-12-31T10:00:00.000Z...
-console.log(schedule.nextOccurrence(scheduleTestObject));
+console.log(schedulator.nextOccurrence(scheduleTestObject));
 //{"result": 2018-12-31T10:30:00.000Z, "error": null}
 ```
