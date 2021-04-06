@@ -10,8 +10,8 @@ Simple schedule handling tool. Allows to create JSON schedule scheme and calcula
   - [Installation](#installation)
   - [Shut up and show me how to use it](#shut-up-and-show-me-how-to-use-it)
   - [Schedulator methods](#schedulator-methods)
-    - [summary(scheduleObject)](#summaryscheduleobject)
-    - [nextOccurrence(scheduleObject)](#nextoccurrencescheduleobject)
+    - [summary](#summaryscheduleobject-locale-options)
+    - [nextOccurrence](#nextoccurrencescheduleobject)
   - [Schedule object](#schedule-object)
     - [enabled (optional)](#enabled-optional)
     - [oneTime](#onetime)
@@ -69,8 +69,20 @@ Web
 > All examples here and later calculated based on fact that current date time is `2018-12-31T10:00:00.000Z`
 
 ## Schedulator methods
-### summary(scheduleObject)
-Returns string human readable representation of schedule object
+### summary(scheduleObject, locale, options)
+#### Parameters
+* scheduleObject
+  * Type: `Object`
+  * Description: Object which describes scheduling rule in JSON format (qv [Schedule object](#schedule-object))
+* locale
+  * Type: `string`, optional
+  * Description: String with locale (see [Date.toLocaleString](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString))
+* options
+  * Type: `Object`, optional
+  * Description: Object with options (see [Date.toLocaleString](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString))
+#### Returns 
+* Type: `string` 
+* Description: Human readable representation of schedule
 ```javascript
 let schedulator = require('schedulator');
 let scheduleTestObject = 
@@ -98,12 +110,18 @@ console.log(schedulator.summary(scheduleOutdatedTestObject));
 //In December and July each 29, 30 and 31 day, every 90 minute(s) between 09:00:00 and 23:59:59, starting 12/31/2018, 4:00:00 AM and till 12/31/2001, 4:00:00 AM
 ```
 ### nextOccurrence(scheduleObject)
-Returns object with UTC date and time of nearest next occurrence of `scheduleObject` in ISO format (e.g. 2019-01-31T13:00:00.000Z) and error messages if value can not be calculated. Object contains 2 fields:
-- `result` - date-time of next occurence or `null` in case of one of next clauses: 
-  * it is not possible to calculate next occurrence 
-  * `endDateTime` of `scheduleObject` is in the past 
-  * event had `oneTime` schedule which already happened
-- `error` - error message in case if it is not possible to calculate next occurence and `null` in case if calculation was done succesfully
+#### Parameters
+* scheduleObject
+  * Type: `Object`
+  * Description: Object which describes scheduling rule in JSON format (qv [Schedule object](#schedule-object))
+#### Returns
+* Type: `Object` 
+  * `result` - date-time of next occurence or `null` in case of one of next clauses: 
+    * it is not possible to calculate next occurrence 
+    * `endDateTime` of `scheduleObject` is in the past 
+    * event had `oneTime` schedule which already happened
+  * `error` - error message in case if it is not possible to calculate next occurence and `null` in case if calculation was done succesfully
+* Description: Object with UTC date and time of nearest next occurrence of [schedule object](#schedule-object) in ISO format (e.g. 2019-01-31T13:00:00.000Z) and error messages if value can not be calculated.
 
 ```javascript
 let schedulator = require('schedulator');
