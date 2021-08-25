@@ -94,17 +94,17 @@ console.log(schedulator.summary(scheduleTestObject));
 
 let scheduleOutdatedTestObject = 
 { 
-	"startDateTime": "2018-12-31T01:00:00.000Z",
-	"endDateTime": "2001-12-31T01:00:00.000Z",
+    "startDateTime": "2018-12-31T01:00:00.000Z",
+    "endDateTime": "2001-12-31T01:00:00.000Z",
     "month": ["dec", "jul"],
     "day": [29, 30, 31],
     "dailyFrequency": { 
-		"start": "09:00:00", 
-		"occursEvery": {
-			"intervalValue": 90, 
-			"intervalType": "minute"
-		}
+	"start": "09:00:00", 
+	"occursEvery": {
+	    "intervalValue": 90, 
+	    "intervalType": "minute"
 	}
+    }
 }
 console.log(schedulator.summary(scheduleOutdatedTestObject));
 //In December and July each 29, 30 and 31 day, every 90 minute(s) between 09:00:00 and 23:59:59, starting 12/31/2018, 4:00:00 AM and till 12/31/2001, 4:00:00 AM
@@ -134,17 +134,17 @@ console.log(schedulator.nextOccurrence(scheduleTestObject));
 
 let scheduleOutdatedTestObject = 
 { 
-	"startDateTime": "2018-12-31T01:00:00.000Z",
-	"endDateTime": "2001-12-31T01:00:00.000Z",
+    "startDateTime": "2018-12-31T01:00:00.000Z",
+    "endDateTime": "2001-12-31T01:00:00.000Z",
     "month": ["dec", "jul"],
     "day": [29, 30, 31],
     "dailyFrequency": { 
-		"start": "09:00:00", 
-		"occursEvery": {
-			"intervalValue": 90, 
-			"intervalType": "minute"
-		}
+	"start": "09:00:00", 
+	"occursEvery": {
+	    "intervalValue": 90, 
+	    "intervalType": "minute"
 	}
+    }
 }
 console.log(schedulator.nextOccurrence(scheduleOutdatedTestObject));
 //{ result: null, error: 'calculated date-time earlier than endDateTime' }
@@ -306,16 +306,16 @@ Repeat condition `occursEvery` is calculated based on `intervalValue` and `inter
 let schedulator = require('schedulator');
 let scheduleTestObject = 
 { 
-	"startDateTime": "2018-12-31T01:00:00.000Z",
+    "startDateTime": "2018-12-31T01:00:00.000Z",
     "month": ["dec", "jul"],
     "day": [29, 30, 31],
     "dailyFrequency": { 
-		"start": "09:00:00", 
-		"occursEvery": {
-			"intervalValue": 90, 
-			"intervalType": "minute"
-		}
+	"start": "09:00:00", 
+	"occursEvery": {
+	    "intervalValue": 90, 
+	    "intervalType": "minute"
 	}
+    }
 }
 //Considering script runs at 2018-12-31T10:00:00.000Z...
 console.log(schedulator.nextOccurrence(scheduleTestObject));
