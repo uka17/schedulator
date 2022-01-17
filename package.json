@@ -28,7 +28,7 @@
     "task-scheduler"
   ],
   "dependencies": {
-    "ajv": "^6.10.0"
+    "ajv": "^8.9.0"
   },
   "devDependencies": {
     "browserify": "^17.0.0",
